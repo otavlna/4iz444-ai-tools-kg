@@ -1,0 +1,724 @@
+@prefix ait:    <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#> .
+@prefix aid:    <https://otavlna.github.io/4iz444-ai-tools-kg/data/> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix schema: <https://schema.org/> .
+
+# Knowledge graph: AI tools catalogue (snapshot of the market around autumn 2025).
+# Prices are list prices per user per month (monthly billing) for individual/team tiers.
+# Benchmark scores are compiled from publicly reported (mostly vendor-reported) figures;
+# evaluation settings differ between vendors, so the numbers are indicative only.
+
+#################################################################
+#    Modalities
+#################################################################
+
+aid:Text  a ait:Modality ; rdfs:label "Text" .
+aid:Image a ait:Modality ; rdfs:label "Image" .
+aid:Audio a ait:Modality ; rdfs:label "Audio" .
+aid:Video a ait:Modality ; rdfs:label "Video" .
+
+#################################################################
+#    Tasks
+#################################################################
+
+aid:Conversation    a ait:Task ; rdfs:label "Conversation" .
+aid:TextGeneration  a ait:Task ; rdfs:label "Text generation" .
+aid:Summarization   a ait:Task ; rdfs:label "Summarization" .
+aid:CodeGeneration  a ait:Task ; rdfs:label "Code generation" .
+aid:CodeCompletion  a ait:Task ; rdfs:label "Code completion" .
+aid:CodeReview      a ait:Task ; rdfs:label "Code review" .
+aid:ImageGeneration a ait:Task ; rdfs:label "Image generation" .
+aid:WebSearch       a ait:Task ; rdfs:label "Web search" .
+aid:DataAnalysis    a ait:Task ; rdfs:label "Data analysis" .
+aid:Reasoning       a ait:Task ; rdfs:label "Knowledge and reasoning" .
+
+#################################################################
+#    Integrations
+#################################################################
+
+aid:WebApp          a ait:Integration ; rdfs:label "Web application" .
+aid:MobileApp       a ait:Integration ; rdfs:label "Mobile app (iOS/Android)" .
+aid:DesktopApp      a ait:Integration ; rdfs:label "Desktop application" .
+aid:CLI             a ait:Integration ; rdfs:label "Command-line interface" .
+aid:VSCode          a ait:Integration ; rdfs:label "Visual Studio Code" .
+aid:JetBrains       a ait:Integration ; rdfs:label "JetBrains IDEs" .
+aid:Slack           a ait:Integration ; rdfs:label "Slack" .
+aid:Discord         a ait:Integration ; rdfs:label "Discord" .
+aid:WhatsApp        a ait:Integration ; rdfs:label "WhatsApp" .
+aid:ChromeExtension a ait:Integration ; rdfs:label "Chrome extension" .
+aid:GoogleWorkspace a ait:Integration ; rdfs:label "Google Workspace" .
+aid:GitHubPlatform  a ait:Integration ; rdfs:label "GitHub.com" .
+aid:RestAPI         a ait:Integration ; rdfs:label "REST API" .
+
+#################################################################
+#    Licences
+#################################################################
+
+aid:Proprietary a ait:License ;
+    rdfs:label "Proprietary (closed weights)" ;
+    ait:spdxId "LicenseRef-Proprietary" .
+
+aid:Apache2 a ait:OpenLicense ;
+    rdfs:label "Apache License 2.0" ;
+    ait:spdxId "Apache-2.0" .
+
+aid:MIT a ait:OpenLicense ;
+    rdfs:label "MIT License" ;
+    ait:spdxId "MIT" .
+
+aid:Llama31License a ait:OpenLicense ;
+    rdfs:label "Llama 3.1 Community License" ;
+    ait:spdxId "LicenseRef-Llama-3.1-Community" .
+
+aid:Llama4License a ait:OpenLicense ;
+    rdfs:label "Llama 4 Community License" ;
+    ait:spdxId "LicenseRef-Llama-4-Community" .
+
+aid:GemmaTerms a ait:OpenLicense ;
+    rdfs:label "Gemma Terms of Use" ;
+    ait:spdxId "LicenseRef-Gemma" .
+
+#################################################################
+#    Providers
+#################################################################
+
+aid:OpenAI a ait:Provider ;
+    rdfs:label "OpenAI" ;
+    ait:foundedYear "2015"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://openai.com> ;
+    schema:sameAs <http://www.wikidata.org/entity/Q21708200> .
+
+aid:Anthropic a ait:Provider ;
+    rdfs:label "Anthropic" ;
+    ait:foundedYear "2021"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://www.anthropic.com> .
+
+aid:Google a ait:Provider ;
+    rdfs:label "Google" ;
+    ait:foundedYear "1998"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://ai.google> ;
+    schema:sameAs <http://www.wikidata.org/entity/Q95> .
+
+aid:Meta a ait:Provider ;
+    rdfs:label "Meta" ;
+    ait:foundedYear "2004"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://ai.meta.com> ;
+    schema:sameAs <http://www.wikidata.org/entity/Q380> .
+
+aid:MistralAI a ait:Provider ;
+    rdfs:label "Mistral AI" ;
+    ait:foundedYear "2023"^^xsd:gYear ;
+    ait:headquartersCountry "France" ;
+    foaf:homepage <https://mistral.ai> .
+
+aid:DeepSeek a ait:Provider ;
+    rdfs:label "DeepSeek" ;
+    ait:foundedYear "2023"^^xsd:gYear ;
+    ait:headquartersCountry "China" ;
+    foaf:homepage <https://www.deepseek.com> .
+
+aid:Alibaba a ait:Provider ;
+    rdfs:label "Alibaba Cloud" ;
+    ait:foundedYear "2009"^^xsd:gYear ;
+    ait:headquartersCountry "China" ;
+    foaf:homepage <https://www.alibabacloud.com> .
+
+aid:MidjourneyInc a ait:Provider ;
+    rdfs:label "Midjourney, Inc." ;
+    ait:foundedYear "2021"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://www.midjourney.com> .
+
+aid:GitHub a ait:Provider ;
+    rdfs:label "GitHub" ;
+    ait:foundedYear "2008"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://github.com> ;
+    schema:sameAs <http://www.wikidata.org/entity/Q364> .
+
+aid:Anysphere a ait:Provider ;
+    rdfs:label "Anysphere" ;
+    ait:foundedYear "2022"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://cursor.com> .
+
+aid:PerplexityAI a ait:Provider ;
+    rdfs:label "Perplexity AI" ;
+    ait:foundedYear "2022"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://www.perplexity.ai> .
+
+aid:OllamaInc a ait:Provider ;
+    rdfs:label "Ollama" ;
+    ait:foundedYear "2021"^^xsd:gYear ;
+    ait:headquartersCountry "United States" ;
+    foaf:homepage <https://ollama.com> .
+
+#################################################################
+#    AI models - OpenAI
+#################################################################
+
+aid:GPT4o a ait:LanguageModel ;
+    rdfs:label "GPT-4o" ;
+    ait:developedBy aid:OpenAI ;
+    ait:releaseDate "2024-05-13"^^xsd:date ;
+    ait:contextWindow 128000 ;
+    ait:inputModality aid:Text , aid:Image , aid:Audio ;
+    ait:outputModality aid:Text , aid:Audio ;
+    ait:hasLicense aid:Proprietary .
+
+aid:GPT41 a ait:LanguageModel ;
+    rdfs:label "GPT-4.1" ;
+    ait:developedBy aid:OpenAI ;
+    ait:releaseDate "2025-04-14"^^xsd:date ;
+    ait:contextWindow 1047576 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:GPT4o .
+
+aid:o3 a ait:LanguageModel ;
+    rdfs:label "o3" ;
+    ait:developedBy aid:OpenAI ;
+    ait:releaseDate "2025-04-16"^^xsd:date ;
+    ait:contextWindow 200000 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary .
+
+aid:GPT5 a ait:LanguageModel ;
+    rdfs:label "GPT-5" ;
+    ait:developedBy aid:OpenAI ;
+    ait:releaseDate "2025-08-07"^^xsd:date ;
+    ait:contextWindow 400000 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:GPT41 , aid:o3 .
+
+aid:GPTOSS120B a ait:LanguageModel ;
+    rdfs:label "gpt-oss-120b" ;
+    ait:developedBy aid:OpenAI ;
+    ait:releaseDate "2025-08-05"^^xsd:date ;
+    ait:contextWindow 131072 ;
+    ait:parameterCount 117.0 ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Apache2 .
+
+aid:DALLE3 a ait:ImageGenerationModel ;
+    rdfs:label "DALL-E 3" ;
+    ait:developedBy aid:OpenAI ;
+    ait:releaseDate "2023-10-19"^^xsd:date ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Image ;
+    ait:hasLicense aid:Proprietary .
+
+aid:GPTImage1 a ait:ImageGenerationModel ;
+    rdfs:label "gpt-image-1" ;
+    ait:developedBy aid:OpenAI ;
+    ait:releaseDate "2025-04-23"^^xsd:date ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Image ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:DALLE3 .
+
+#################################################################
+#    AI models - Anthropic
+#################################################################
+
+aid:Claude35Sonnet a ait:LanguageModel ;
+    rdfs:label "Claude 3.5 Sonnet" ;
+    ait:developedBy aid:Anthropic ;
+    ait:releaseDate "2024-06-20"^^xsd:date ;
+    ait:contextWindow 200000 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary .
+
+aid:Claude37Sonnet a ait:LanguageModel ;
+    rdfs:label "Claude 3.7 Sonnet" ;
+    ait:developedBy aid:Anthropic ;
+    ait:releaseDate "2025-02-24"^^xsd:date ;
+    ait:contextWindow 200000 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:Claude35Sonnet .
+
+aid:ClaudeSonnet4 a ait:LanguageModel ;
+    rdfs:label "Claude Sonnet 4" ;
+    ait:developedBy aid:Anthropic ;
+    ait:releaseDate "2025-05-22"^^xsd:date ;
+    ait:contextWindow 200000 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:Claude37Sonnet .
+
+aid:ClaudeOpus41 a ait:LanguageModel ;
+    rdfs:label "Claude Opus 4.1" ;
+    ait:developedBy aid:Anthropic ;
+    ait:releaseDate "2025-08-05"^^xsd:date ;
+    ait:contextWindow 200000 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary .
+
+aid:ClaudeSonnet45 a ait:LanguageModel ;
+    rdfs:label "Claude Sonnet 4.5" ;
+    ait:developedBy aid:Anthropic ;
+    ait:releaseDate "2025-09-29"^^xsd:date ;
+    ait:contextWindow 200000 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:ClaudeSonnet4 .
+
+#################################################################
+#    AI models - Google
+#################################################################
+
+aid:Gemini20Flash a ait:LanguageModel ;
+    rdfs:label "Gemini 2.0 Flash" ;
+    ait:developedBy aid:Google ;
+    ait:releaseDate "2024-12-11"^^xsd:date ;
+    ait:contextWindow 1048576 ;
+    ait:inputModality aid:Text , aid:Image , aid:Audio , aid:Video ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary .
+
+aid:Gemini25Pro a ait:LanguageModel ;
+    rdfs:label "Gemini 2.5 Pro" ;
+    ait:developedBy aid:Google ;
+    ait:releaseDate "2025-03-25"^^xsd:date ;
+    ait:contextWindow 1048576 ;
+    ait:inputModality aid:Text , aid:Image , aid:Audio , aid:Video ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:Gemini20Flash .
+
+aid:Gemini25Flash a ait:LanguageModel ;
+    rdfs:label "Gemini 2.5 Flash" ;
+    ait:developedBy aid:Google ;
+    ait:releaseDate "2025-04-17"^^xsd:date ;
+    ait:contextWindow 1048576 ;
+    ait:inputModality aid:Text , aid:Image , aid:Audio , aid:Video ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:Gemini20Flash .
+
+aid:Gemma3_27B a ait:LanguageModel ;
+    rdfs:label "Gemma 3 27B" ;
+    ait:developedBy aid:Google ;
+    ait:releaseDate "2025-03-12"^^xsd:date ;
+    ait:contextWindow 128000 ;
+    ait:parameterCount 27.0 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:GemmaTerms .
+
+aid:Imagen4 a ait:ImageGenerationModel ;
+    rdfs:label "Imagen 4" ;
+    ait:developedBy aid:Google ;
+    ait:releaseDate "2025-05-20"^^xsd:date ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Image ;
+    ait:hasLicense aid:Proprietary .
+
+#################################################################
+#    AI models - Meta, Mistral AI, DeepSeek, Alibaba, Midjourney
+#################################################################
+
+aid:Llama31_405B a ait:LanguageModel ;
+    rdfs:label "Llama 3.1 405B" ;
+    ait:developedBy aid:Meta ;
+    ait:releaseDate "2024-07-23"^^xsd:date ;
+    ait:contextWindow 128000 ;
+    ait:parameterCount 405.0 ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Llama31License .
+
+aid:Llama4Maverick a ait:LanguageModel ;
+    rdfs:label "Llama 4 Maverick" ;
+    ait:developedBy aid:Meta ;
+    ait:releaseDate "2025-04-05"^^xsd:date ;
+    ait:contextWindow 1000000 ;
+    ait:parameterCount 400.0 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Llama4License ;
+    ait:derivedFrom aid:Llama31_405B .
+
+aid:MistralMedium3 a ait:LanguageModel ;
+    rdfs:label "Mistral Medium 3" ;
+    ait:developedBy aid:MistralAI ;
+    ait:releaseDate "2025-05-07"^^xsd:date ;
+    ait:contextWindow 128000 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary .
+
+aid:MistralSmall31 a ait:LanguageModel ;
+    rdfs:label "Mistral Small 3.1" ;
+    ait:developedBy aid:MistralAI ;
+    ait:releaseDate "2025-03-17"^^xsd:date ;
+    ait:contextWindow 128000 ;
+    ait:parameterCount 24.0 ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Apache2 .
+
+aid:Codestral2501 a ait:LanguageModel ;
+    rdfs:label "Codestral 25.01" ;
+    ait:developedBy aid:MistralAI ;
+    ait:releaseDate "2025-01-13"^^xsd:date ;
+    ait:contextWindow 256000 ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Proprietary .
+
+aid:DeepSeekV3 a ait:LanguageModel ;
+    rdfs:label "DeepSeek-V3" ;
+    ait:developedBy aid:DeepSeek ;
+    ait:releaseDate "2024-12-26"^^xsd:date ;
+    ait:contextWindow 128000 ;
+    ait:parameterCount 671.0 ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:MIT .
+
+aid:DeepSeekR1 a ait:LanguageModel ;
+    rdfs:label "DeepSeek-R1" ;
+    ait:developedBy aid:DeepSeek ;
+    ait:releaseDate "2025-01-20"^^xsd:date ;
+    ait:contextWindow 128000 ;
+    ait:parameterCount 671.0 ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:MIT ;
+    ait:derivedFrom aid:DeepSeekV3 .
+
+aid:Qwen3_235B a ait:LanguageModel ;
+    rdfs:label "Qwen3-235B-A22B" ;
+    ait:developedBy aid:Alibaba ;
+    ait:releaseDate "2025-04-29"^^xsd:date ;
+    ait:contextWindow 131072 ;
+    ait:parameterCount 235.0 ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Text ;
+    ait:hasLicense aid:Apache2 .
+
+aid:MidjourneyV61 a ait:ImageGenerationModel ;
+    rdfs:label "Midjourney V6.1" ;
+    ait:developedBy aid:MidjourneyInc ;
+    ait:releaseDate "2024-07-30"^^xsd:date ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Image ;
+    ait:hasLicense aid:Proprietary .
+
+aid:MidjourneyV7 a ait:ImageGenerationModel ;
+    rdfs:label "Midjourney V7" ;
+    ait:developedBy aid:MidjourneyInc ;
+    ait:releaseDate "2025-04-03"^^xsd:date ;
+    ait:inputModality aid:Text , aid:Image ;
+    ait:outputModality aid:Image ;
+    ait:hasLicense aid:Proprietary ;
+    ait:derivedFrom aid:MidjourneyV61 .
+
+#################################################################
+#    Pricing plans
+#################################################################
+
+aid:ChatGPTFree    a ait:PricingPlan ; rdfs:label "ChatGPT Free" ;    ait:monthlyPrice 0.00 ;   ait:currency "USD" .
+aid:ChatGPTPlus    a ait:PricingPlan ; rdfs:label "ChatGPT Plus" ;    ait:monthlyPrice 20.00 ;  ait:currency "USD" .
+aid:ChatGPTPro     a ait:PricingPlan ; rdfs:label "ChatGPT Pro" ;     ait:monthlyPrice 200.00 ; ait:currency "USD" .
+aid:ChatGPTTeam    a ait:PricingPlan ; rdfs:label "ChatGPT Team" ;    ait:monthlyPrice 30.00 ;  ait:currency "USD" .
+
+aid:ClaudeFree     a ait:PricingPlan ; rdfs:label "Claude Free" ;     ait:monthlyPrice 0.00 ;   ait:currency "USD" .
+aid:ClaudePro      a ait:PricingPlan ; rdfs:label "Claude Pro" ;      ait:monthlyPrice 20.00 ;  ait:currency "USD" .
+aid:ClaudeMax      a ait:PricingPlan ; rdfs:label "Claude Max 5x" ;   ait:monthlyPrice 100.00 ; ait:currency "USD" .
+aid:ClaudeTeam     a ait:PricingPlan ; rdfs:label "Claude Team" ;     ait:monthlyPrice 30.00 ;  ait:currency "USD" .
+
+aid:GeminiFree     a ait:PricingPlan ; rdfs:label "Gemini Free" ;     ait:monthlyPrice 0.00 ;   ait:currency "USD" .
+aid:GoogleAIPro    a ait:PricingPlan ; rdfs:label "Google AI Pro" ;   ait:monthlyPrice 19.99 ;  ait:currency "USD" .
+aid:GoogleAIUltra  a ait:PricingPlan ; rdfs:label "Google AI Ultra" ; ait:monthlyPrice 249.99 ; ait:currency "USD" .
+aid:CodeAssistFree a ait:PricingPlan ; rdfs:label "Gemini Code Assist for individuals" ; ait:monthlyPrice 0.00 ;  ait:currency "USD" .
+aid:CodeAssistStd  a ait:PricingPlan ; rdfs:label "Gemini Code Assist Standard" ;        ait:monthlyPrice 22.80 ; ait:currency "USD" .
+
+aid:CopilotFree     a ait:PricingPlan ; rdfs:label "GitHub Copilot Free" ;     ait:monthlyPrice 0.00 ;  ait:currency "USD" .
+aid:CopilotPro      a ait:PricingPlan ; rdfs:label "GitHub Copilot Pro" ;      ait:monthlyPrice 10.00 ; ait:currency "USD" .
+aid:CopilotProPlus  a ait:PricingPlan ; rdfs:label "GitHub Copilot Pro+" ;     ait:monthlyPrice 39.00 ; ait:currency "USD" .
+aid:CopilotBusiness a ait:PricingPlan ; rdfs:label "GitHub Copilot Business" ; ait:monthlyPrice 19.00 ; ait:currency "USD" .
+
+aid:CursorHobby    a ait:PricingPlan ; rdfs:label "Cursor Hobby" ;    ait:monthlyPrice 0.00 ;   ait:currency "USD" .
+aid:CursorPro      a ait:PricingPlan ; rdfs:label "Cursor Pro" ;      ait:monthlyPrice 20.00 ;  ait:currency "USD" .
+aid:CursorUltra    a ait:PricingPlan ; rdfs:label "Cursor Ultra" ;    ait:monthlyPrice 200.00 ; ait:currency "USD" .
+aid:CursorTeams    a ait:PricingPlan ; rdfs:label "Cursor Teams" ;    ait:monthlyPrice 40.00 ;  ait:currency "USD" .
+
+aid:MidjourneyBasic    a ait:PricingPlan ; rdfs:label "Midjourney Basic" ;    ait:monthlyPrice 10.00 ;  ait:currency "USD" .
+aid:MidjourneyStandard a ait:PricingPlan ; rdfs:label "Midjourney Standard" ; ait:monthlyPrice 30.00 ;  ait:currency "USD" .
+aid:MidjourneyPro      a ait:PricingPlan ; rdfs:label "Midjourney Pro" ;      ait:monthlyPrice 60.00 ;  ait:currency "USD" .
+aid:MidjourneyMega     a ait:PricingPlan ; rdfs:label "Midjourney Mega" ;     ait:monthlyPrice 120.00 ; ait:currency "USD" .
+
+aid:PerplexityFree a ait:PricingPlan ; rdfs:label "Perplexity Free" ; ait:monthlyPrice 0.00 ;   ait:currency "USD" .
+aid:PerplexityPro  a ait:PricingPlan ; rdfs:label "Perplexity Pro" ;  ait:monthlyPrice 20.00 ;  ait:currency "USD" .
+aid:PerplexityMax  a ait:PricingPlan ; rdfs:label "Perplexity Max" ;  ait:monthlyPrice 200.00 ; ait:currency "USD" .
+
+aid:MetaAIFree     a ait:PricingPlan ; rdfs:label "Meta AI (free)" ;  ait:monthlyPrice 0.00 ;   ait:currency "USD" .
+
+aid:LeChatFree     a ait:PricingPlan ; rdfs:label "Le Chat Free" ;    ait:monthlyPrice 0.00 ;   ait:currency "EUR" .
+aid:LeChatPro      a ait:PricingPlan ; rdfs:label "Le Chat Pro" ;     ait:monthlyPrice 14.99 ;  ait:currency "EUR" .
+
+aid:DeepSeekFree   a ait:PricingPlan ; rdfs:label "DeepSeek Chat (free)" ; ait:monthlyPrice 0.00 ; ait:currency "USD" .
+aid:QwenChatFree   a ait:PricingPlan ; rdfs:label "Qwen Chat (free)" ;     ait:monthlyPrice 0.00 ; ait:currency "USD" .
+aid:OllamaFree     a ait:PricingPlan ; rdfs:label "Ollama (local, free)" ; ait:monthlyPrice 0.00 ; ait:currency "USD" .
+
+#################################################################
+#    AI tools
+#################################################################
+
+aid:ChatGPT a ait:AITool ;
+    rdfs:label "ChatGPT" ;
+    ait:providedBy aid:OpenAI ;
+    ait:releaseDate "2022-11-30"^^xsd:date ;
+    ait:poweredBy aid:GPT5 , aid:GPT4o , aid:o3 , aid:GPTImage1 ;
+    ait:supportsTask aid:Conversation , aid:TextGeneration , aid:Summarization , aid:CodeGeneration ,
+                     aid:ImageGeneration , aid:WebSearch , aid:DataAnalysis ;
+    ait:integratesWith aid:WebApp , aid:MobileApp , aid:DesktopApp , aid:Slack ;
+    ait:hasPricingPlan aid:ChatGPTFree , aid:ChatGPTPlus , aid:ChatGPTPro , aid:ChatGPTTeam ;
+    ait:competesWith aid:Claude , aid:Gemini , aid:LeChat , aid:DeepSeekChat ;
+    foaf:homepage <https://chatgpt.com> .
+
+aid:Codex a ait:AITool ;
+    rdfs:label "OpenAI Codex" ;
+    ait:providedBy aid:OpenAI ;
+    ait:releaseDate "2025-05-16"^^xsd:date ;
+    ait:poweredBy aid:GPT5 ;
+    ait:supportsTask aid:CodeGeneration , aid:CodeReview ;
+    ait:integratesWith aid:CLI , aid:VSCode , aid:WebApp , aid:GitHubPlatform ;
+    ait:hasPricingPlan aid:ChatGPTPlus , aid:ChatGPTPro , aid:ChatGPTTeam ;
+    ait:competesWith aid:ClaudeCode , aid:GitHubCopilot , aid:Cursor .
+
+aid:Claude a ait:AITool ;
+    rdfs:label "Claude" ;
+    ait:providedBy aid:Anthropic ;
+    ait:releaseDate "2023-03-14"^^xsd:date ;
+    ait:poweredBy aid:ClaudeSonnet45 , aid:ClaudeOpus41 ;
+    ait:supportsTask aid:Conversation , aid:TextGeneration , aid:Summarization , aid:CodeGeneration ,
+                     aid:WebSearch , aid:DataAnalysis ;
+    ait:integratesWith aid:WebApp , aid:MobileApp , aid:DesktopApp , aid:Slack , aid:ChromeExtension ;
+    ait:hasPricingPlan aid:ClaudeFree , aid:ClaudePro , aid:ClaudeMax , aid:ClaudeTeam ;
+    ait:competesWith aid:Gemini , aid:LeChat ;
+    foaf:homepage <https://claude.ai> .
+
+aid:ClaudeCode a ait:AITool ;
+    rdfs:label "Claude Code" ;
+    ait:providedBy aid:Anthropic ;
+    ait:releaseDate "2025-02-24"^^xsd:date ;
+    ait:poweredBy aid:ClaudeSonnet45 , aid:ClaudeOpus41 ;
+    ait:supportsTask aid:CodeGeneration , aid:CodeReview ;
+    ait:integratesWith aid:CLI , aid:VSCode , aid:JetBrains , aid:GitHubPlatform ;
+    ait:hasPricingPlan aid:ClaudePro , aid:ClaudeMax , aid:ClaudeTeam ;
+    ait:competesWith aid:Cursor , aid:GitHubCopilot .
+
+aid:Gemini a ait:AITool ;
+    rdfs:label "Gemini" ;
+    ait:providedBy aid:Google ;
+    ait:releaseDate "2023-03-21"^^xsd:date ;
+    ait:poweredBy aid:Gemini25Pro , aid:Gemini25Flash , aid:Imagen4 ;
+    ait:supportsTask aid:Conversation , aid:TextGeneration , aid:Summarization , aid:CodeGeneration ,
+                     aid:ImageGeneration , aid:WebSearch ;
+    ait:integratesWith aid:WebApp , aid:MobileApp , aid:GoogleWorkspace , aid:ChromeExtension ;
+    ait:hasPricingPlan aid:GeminiFree , aid:GoogleAIPro , aid:GoogleAIUltra ;
+    ait:competesWith aid:MetaAI ;
+    foaf:homepage <https://gemini.google.com> .
+
+aid:GeminiCodeAssist a ait:AITool ;
+    rdfs:label "Gemini Code Assist" ;
+    ait:providedBy aid:Google ;
+    ait:releaseDate "2024-04-09"^^xsd:date ;
+    ait:poweredBy aid:Gemini25Pro ;
+    ait:supportsTask aid:CodeGeneration , aid:CodeCompletion , aid:CodeReview ;
+    ait:integratesWith aid:VSCode , aid:JetBrains , aid:GitHubPlatform ;
+    ait:hasPricingPlan aid:CodeAssistFree , aid:CodeAssistStd ;
+    ait:competesWith aid:GitHubCopilot .
+
+aid:GitHubCopilot a ait:AITool ;
+    rdfs:label "GitHub Copilot" ;
+    ait:providedBy aid:GitHub ;
+    ait:releaseDate "2022-06-21"^^xsd:date ;
+    ait:poweredBy aid:GPT41 , aid:GPT5 , aid:ClaudeSonnet45 , aid:Gemini25Pro ;
+    ait:supportsTask aid:CodeGeneration , aid:CodeCompletion , aid:CodeReview ;
+    ait:integratesWith aid:VSCode , aid:JetBrains , aid:GitHubPlatform , aid:CLI ;
+    ait:hasPricingPlan aid:CopilotFree , aid:CopilotPro , aid:CopilotProPlus , aid:CopilotBusiness ;
+    ait:competesWith aid:Cursor ;
+    foaf:homepage <https://github.com/features/copilot> .
+
+aid:Cursor a ait:AITool ;
+    rdfs:label "Cursor" ;
+    ait:providedBy aid:Anysphere ;
+    ait:poweredBy aid:ClaudeSonnet45 , aid:GPT5 , aid:Gemini25Pro ;
+    ait:supportsTask aid:CodeGeneration , aid:CodeCompletion , aid:CodeReview ;
+    ait:integratesWith aid:DesktopApp , aid:CLI , aid:GitHubPlatform ;
+    ait:hasPricingPlan aid:CursorHobby , aid:CursorPro , aid:CursorUltra , aid:CursorTeams .
+
+aid:Midjourney a ait:AITool ;
+    rdfs:label "Midjourney" ;
+    ait:providedBy aid:MidjourneyInc ;
+    ait:releaseDate "2022-07-12"^^xsd:date ;
+    ait:poweredBy aid:MidjourneyV7 , aid:MidjourneyV61 ;
+    ait:supportsTask aid:ImageGeneration ;
+    ait:integratesWith aid:WebApp , aid:Discord ;
+    ait:hasPricingPlan aid:MidjourneyBasic , aid:MidjourneyStandard , aid:MidjourneyPro , aid:MidjourneyMega .
+
+aid:Perplexity a ait:AITool ;
+    rdfs:label "Perplexity" ;
+    ait:providedBy aid:PerplexityAI ;
+    ait:releaseDate "2022-12-07"^^xsd:date ;
+    ait:poweredBy aid:GPT5 , aid:ClaudeSonnet45 , aid:Gemini25Pro ;
+    ait:supportsTask aid:WebSearch , aid:Summarization , aid:Conversation ;
+    ait:integratesWith aid:WebApp , aid:MobileApp , aid:ChromeExtension ;
+    ait:hasPricingPlan aid:PerplexityFree , aid:PerplexityPro , aid:PerplexityMax ;
+    ait:competesWith aid:ChatGPT , aid:Gemini .
+
+aid:MetaAI a ait:AITool ;
+    rdfs:label "Meta AI" ;
+    ait:providedBy aid:Meta ;
+    ait:releaseDate "2023-09-27"^^xsd:date ;
+    ait:poweredBy aid:Llama4Maverick ;
+    ait:supportsTask aid:Conversation , aid:TextGeneration , aid:ImageGeneration ;
+    ait:integratesWith aid:WhatsApp , aid:WebApp , aid:MobileApp ;
+    ait:hasPricingPlan aid:MetaAIFree .
+
+aid:LeChat a ait:AITool ;
+    rdfs:label "Le Chat" ;
+    ait:providedBy aid:MistralAI ;
+    ait:releaseDate "2024-02-26"^^xsd:date ;
+    ait:poweredBy aid:MistralMedium3 , aid:MistralSmall31 , aid:Codestral2501 ;
+    ait:supportsTask aid:Conversation , aid:TextGeneration , aid:Summarization , aid:CodeGeneration , aid:WebSearch ;
+    ait:integratesWith aid:WebApp , aid:MobileApp ;
+    ait:hasPricingPlan aid:LeChatFree , aid:LeChatPro ;
+    foaf:homepage <https://chat.mistral.ai> .
+
+aid:DeepSeekChat a ait:AITool ;
+    rdfs:label "DeepSeek Chat" ;
+    ait:providedBy aid:DeepSeek ;
+    ait:poweredBy aid:DeepSeekV3 , aid:DeepSeekR1 ;
+    ait:supportsTask aid:Conversation , aid:TextGeneration , aid:CodeGeneration , aid:WebSearch ;
+    ait:integratesWith aid:WebApp , aid:MobileApp , aid:RestAPI ;
+    ait:hasPricingPlan aid:DeepSeekFree ;
+    ait:competesWith aid:QwenChat ;
+    foaf:homepage <https://chat.deepseek.com> .
+
+aid:QwenChat a ait:AITool ;
+    rdfs:label "Qwen Chat" ;
+    ait:providedBy aid:Alibaba ;
+    ait:poweredBy aid:Qwen3_235B ;
+    ait:supportsTask aid:Conversation , aid:TextGeneration , aid:CodeGeneration ;
+    ait:integratesWith aid:WebApp , aid:RestAPI ;
+    ait:hasPricingPlan aid:QwenChatFree ;
+    foaf:homepage <https://chat.qwen.ai> .
+
+aid:Ollama a ait:AITool ;
+    rdfs:label "Ollama" ;
+    ait:providedBy aid:OllamaInc ;
+    ait:poweredBy aid:GPTOSS120B , aid:Llama31_405B , aid:Gemma3_27B , aid:MistralSmall31 ,
+                  aid:DeepSeekR1 , aid:Qwen3_235B ;
+    ait:supportsTask aid:Conversation , aid:TextGeneration , aid:CodeGeneration ;
+    ait:integratesWith aid:CLI , aid:DesktopApp , aid:RestAPI ;
+    ait:hasPricingPlan aid:OllamaFree .
+
+#################################################################
+#    Benchmarks
+#################################################################
+
+aid:MMLU a ait:Benchmark ;
+    rdfs:label "MMLU" ;
+    ait:measuresTask aid:Reasoning ;
+    ait:metric "accuracy" .
+
+aid:GPQADiamond a ait:Benchmark ;
+    rdfs:label "GPQA Diamond" ;
+    ait:measuresTask aid:Reasoning ;
+    ait:metric "accuracy" .
+
+aid:AIME2025 a ait:Benchmark ;
+    rdfs:label "AIME 2025" ;
+    ait:measuresTask aid:Reasoning ;
+    ait:metric "accuracy" .
+
+aid:HumanEval a ait:Benchmark ;
+    rdfs:label "HumanEval" ;
+    ait:measuresTask aid:CodeGeneration ;
+    ait:metric "pass@1" .
+
+aid:SWEbenchVerified a ait:Benchmark ;
+    rdfs:label "SWE-bench Verified" ;
+    ait:measuresTask aid:CodeGeneration ;
+    ait:metric "resolved issues (%)" .
+
+#################################################################
+#    Benchmark results
+#################################################################
+
+# --- MMLU
+aid:R_MMLU_GPT4o          a ait:BenchmarkResult ; ait:evaluatedModel aid:GPT4o ;          ait:onBenchmark aid:MMLU ; ait:score 88.7 .
+aid:R_MMLU_GPT41          a ait:BenchmarkResult ; ait:evaluatedModel aid:GPT41 ;          ait:onBenchmark aid:MMLU ; ait:score 90.2 .
+aid:R_MMLU_GPTOSS120B     a ait:BenchmarkResult ; ait:evaluatedModel aid:GPTOSS120B ;     ait:onBenchmark aid:MMLU ; ait:score 90.0 .
+aid:R_MMLU_Claude35Sonnet a ait:BenchmarkResult ; ait:evaluatedModel aid:Claude35Sonnet ; ait:onBenchmark aid:MMLU ; ait:score 88.7 .
+aid:R_MMLU_Llama31_405B   a ait:BenchmarkResult ; ait:evaluatedModel aid:Llama31_405B ;   ait:onBenchmark aid:MMLU ; ait:score 88.6 .
+aid:R_MMLU_Llama4Maverick a ait:BenchmarkResult ; ait:evaluatedModel aid:Llama4Maverick ; ait:onBenchmark aid:MMLU ; ait:score 85.5 .
+aid:R_MMLU_DeepSeekV3     a ait:BenchmarkResult ; ait:evaluatedModel aid:DeepSeekV3 ;     ait:onBenchmark aid:MMLU ; ait:score 88.5 .
+aid:R_MMLU_DeepSeekR1     a ait:BenchmarkResult ; ait:evaluatedModel aid:DeepSeekR1 ;     ait:onBenchmark aid:MMLU ; ait:score 90.8 .
+aid:R_MMLU_Qwen3_235B     a ait:BenchmarkResult ; ait:evaluatedModel aid:Qwen3_235B ;     ait:onBenchmark aid:MMLU ; ait:score 87.8 .
+aid:R_MMLU_MistralSmall31 a ait:BenchmarkResult ; ait:evaluatedModel aid:MistralSmall31 ; ait:onBenchmark aid:MMLU ; ait:score 80.6 .
+aid:R_MMLU_Gemma3_27B     a ait:BenchmarkResult ; ait:evaluatedModel aid:Gemma3_27B ;     ait:onBenchmark aid:MMLU ; ait:score 78.6 .
+
+# --- GPQA Diamond
+aid:R_GPQA_GPT4o          a ait:BenchmarkResult ; ait:evaluatedModel aid:GPT4o ;          ait:onBenchmark aid:GPQADiamond ; ait:score 53.6 .
+aid:R_GPQA_o3             a ait:BenchmarkResult ; ait:evaluatedModel aid:o3 ;             ait:onBenchmark aid:GPQADiamond ; ait:score 83.3 .
+aid:R_GPQA_GPT5           a ait:BenchmarkResult ; ait:evaluatedModel aid:GPT5 ;           ait:onBenchmark aid:GPQADiamond ; ait:score 85.7 .
+aid:R_GPQA_GPTOSS120B     a ait:BenchmarkResult ; ait:evaluatedModel aid:GPTOSS120B ;     ait:onBenchmark aid:GPQADiamond ; ait:score 80.1 .
+aid:R_GPQA_Claude37Sonnet a ait:BenchmarkResult ; ait:evaluatedModel aid:Claude37Sonnet ; ait:onBenchmark aid:GPQADiamond ; ait:score 78.2 .
+aid:R_GPQA_ClaudeOpus41   a ait:BenchmarkResult ; ait:evaluatedModel aid:ClaudeOpus41 ;   ait:onBenchmark aid:GPQADiamond ; ait:score 80.9 .
+aid:R_GPQA_ClaudeSonnet45 a ait:BenchmarkResult ; ait:evaluatedModel aid:ClaudeSonnet45 ; ait:onBenchmark aid:GPQADiamond ; ait:score 83.4 .
+aid:R_GPQA_Gemini25Pro    a ait:BenchmarkResult ; ait:evaluatedModel aid:Gemini25Pro ;    ait:onBenchmark aid:GPQADiamond ; ait:score 86.4 .
+aid:R_GPQA_DeepSeekR1     a ait:BenchmarkResult ; ait:evaluatedModel aid:DeepSeekR1 ;     ait:onBenchmark aid:GPQADiamond ; ait:score 71.5 .
+aid:R_GPQA_Llama4Maverick a ait:BenchmarkResult ; ait:evaluatedModel aid:Llama4Maverick ; ait:onBenchmark aid:GPQADiamond ; ait:score 69.8 .
+aid:R_GPQA_Qwen3_235B     a ait:BenchmarkResult ; ait:evaluatedModel aid:Qwen3_235B ;     ait:onBenchmark aid:GPQADiamond ; ait:score 71.1 .
+
+# --- AIME 2025
+aid:R_AIME_o3             a ait:BenchmarkResult ; ait:evaluatedModel aid:o3 ;             ait:onBenchmark aid:AIME2025 ; ait:score 88.9 .
+aid:R_AIME_GPT5           a ait:BenchmarkResult ; ait:evaluatedModel aid:GPT5 ;           ait:onBenchmark aid:AIME2025 ; ait:score 94.6 .
+aid:R_AIME_GPTOSS120B     a ait:BenchmarkResult ; ait:evaluatedModel aid:GPTOSS120B ;     ait:onBenchmark aid:AIME2025 ; ait:score 92.5 .
+aid:R_AIME_ClaudeSonnet45 a ait:BenchmarkResult ; ait:evaluatedModel aid:ClaudeSonnet45 ; ait:onBenchmark aid:AIME2025 ; ait:score 87.0 .
+aid:R_AIME_Gemini25Pro    a ait:BenchmarkResult ; ait:evaluatedModel aid:Gemini25Pro ;    ait:onBenchmark aid:AIME2025 ; ait:score 86.7 .
+aid:R_AIME_Qwen3_235B     a ait:BenchmarkResult ; ait:evaluatedModel aid:Qwen3_235B ;     ait:onBenchmark aid:AIME2025 ; ait:score 81.5 .
+
+# --- HumanEval
+aid:R_HE_GPT4o            a ait:BenchmarkResult ; ait:evaluatedModel aid:GPT4o ;          ait:onBenchmark aid:HumanEval ; ait:score 90.2 .
+aid:R_HE_Claude35Sonnet   a ait:BenchmarkResult ; ait:evaluatedModel aid:Claude35Sonnet ; ait:onBenchmark aid:HumanEval ; ait:score 92.0 .
+aid:R_HE_Llama31_405B     a ait:BenchmarkResult ; ait:evaluatedModel aid:Llama31_405B ;   ait:onBenchmark aid:HumanEval ; ait:score 89.0 .
+aid:R_HE_Codestral2501    a ait:BenchmarkResult ; ait:evaluatedModel aid:Codestral2501 ;  ait:onBenchmark aid:HumanEval ; ait:score 86.6 .
+aid:R_HE_MistralSmall31   a ait:BenchmarkResult ; ait:evaluatedModel aid:MistralSmall31 ; ait:onBenchmark aid:HumanEval ; ait:score 88.4 .
+
+# --- SWE-bench Verified
+aid:R_SWE_GPT41           a ait:BenchmarkResult ; ait:evaluatedModel aid:GPT41 ;          ait:onBenchmark aid:SWEbenchVerified ; ait:score 54.6 .
+aid:R_SWE_o3              a ait:BenchmarkResult ; ait:evaluatedModel aid:o3 ;             ait:onBenchmark aid:SWEbenchVerified ; ait:score 69.1 .
+aid:R_SWE_GPT5            a ait:BenchmarkResult ; ait:evaluatedModel aid:GPT5 ;           ait:onBenchmark aid:SWEbenchVerified ; ait:score 74.9 .
+aid:R_SWE_Claude35Sonnet  a ait:BenchmarkResult ; ait:evaluatedModel aid:Claude35Sonnet ; ait:onBenchmark aid:SWEbenchVerified ; ait:score 49.0 .
+aid:R_SWE_Claude37Sonnet  a ait:BenchmarkResult ; ait:evaluatedModel aid:Claude37Sonnet ; ait:onBenchmark aid:SWEbenchVerified ; ait:score 62.3 .
+aid:R_SWE_ClaudeSonnet4   a ait:BenchmarkResult ; ait:evaluatedModel aid:ClaudeSonnet4 ;  ait:onBenchmark aid:SWEbenchVerified ; ait:score 72.7 .
+aid:R_SWE_ClaudeOpus41    a ait:BenchmarkResult ; ait:evaluatedModel aid:ClaudeOpus41 ;   ait:onBenchmark aid:SWEbenchVerified ; ait:score 74.5 .
+aid:R_SWE_ClaudeSonnet45  a ait:BenchmarkResult ; ait:evaluatedModel aid:ClaudeSonnet45 ; ait:onBenchmark aid:SWEbenchVerified ; ait:score 77.2 .
+aid:R_SWE_Gemini25Pro     a ait:BenchmarkResult ; ait:evaluatedModel aid:Gemini25Pro ;    ait:onBenchmark aid:SWEbenchVerified ; ait:score 63.8 .
+aid:R_SWE_DeepSeekR1      a ait:BenchmarkResult ; ait:evaluatedModel aid:DeepSeekR1 ;     ait:onBenchmark aid:SWEbenchVerified ; ait:score 49.2 .
+aid:R_SWE_GPTOSS120B      a ait:BenchmarkResult ; ait:evaluatedModel aid:GPTOSS120B ;     ait:onBenchmark aid:SWEbenchVerified ; ait:score 62.4 .

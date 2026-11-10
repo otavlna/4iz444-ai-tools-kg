@@ -1,0 +1,24 @@
+# CQ3: What is the average, minimum and maximum monthly price of paid plans per provider?
+#      (A plan can be shared by several tools of one provider, so plans are deduplicated first.)
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?provider ?currency (COUNT(?plan) AS ?paidPlans)
+       (ROUND(AVG(?price) * 100) / 100 AS ?avgPrice)
+       (MIN(?price) AS ?minPrice) (MAX(?price) AS ?maxPrice)
+WHERE {
+  {
+    SELECT DISTINCT ?provider ?plan ?price ?currency
+    WHERE {
+      ?tool ait:providedBy/rdfs:label ?provider ;
+            ait:hasPricingPlan ?plan .
+      ?plan ait:monthlyPrice ?price ;
+            ait:currency ?currency .
+      FILTER (?price > 0)
+    }
+  }
+}
+GROUP BY ?provider ?currency
+ORDER BY DESC(?avgPrice)

@@ -1,0 +1,63 @@
+@prefix ait:    <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#> .
+@prefix aid:    <https://otavlna.github.io/4iz444-ai-tools-kg/data/> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+# Intentionally INVALID data used to demonstrate that the SHACL shapes work.
+# It is validated together with the valid knowledge graph (ai-tools-data.ttl).
+# Every block below violates one or more shapes; the expected violation is noted.
+
+# [S1] Tool without a provider and without any pricing plan.
+aid:BadTool_NoProvider a ait:AITool ;
+    rdfs:label "Nameless Assistant" ;
+    ait:poweredBy aid:GPT4o ;
+    ait:supportsTask aid:Conversation .
+
+# [S1] Tool "powered" by something that is not an AI model (a provider).
+aid:BadTool_WrongModel a ait:AITool ;
+    rdfs:label "Confused Copilot" ;
+    ait:providedBy aid:GitHub ;
+    ait:poweredBy aid:OpenAI ;
+    ait:supportsTask aid:CodeGeneration ;
+    ait:hasPricingPlan aid:CopilotFree .
+
+# [S2] Release date as a plain string, negative context window, missing licence.
+# [S3] Language model that does not produce text.
+aid:BadModel_Types a ait:LanguageModel ;
+    rdfs:label "BrokenLM-1" ;
+    ait:developedBy aid:OpenAI ;
+    ait:releaseDate "next spring" ;
+    ait:contextWindow -4096 ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Audio .
+
+# [S3] Image generation model that outputs only text.
+aid:BadModel_NoImage a ait:ImageGenerationModel ;
+    rdfs:label "PixelDream 0.1" ;
+    ait:developedBy aid:MidjourneyInc ;
+    ait:releaseDate "2025-01-01"^^xsd:date ;
+    ait:hasLicense aid:Proprietary ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Text .
+
+# [S4] Score out of range (> 100) and missing benchmark.
+aid:BadResult_Score a ait:BenchmarkResult ;
+    ait:evaluatedModel aid:GPT5 ;
+    ait:score 112.5 .
+
+# [S5] Negative price and unsupported currency.
+aid:BadPlan_Price a ait:PricingPlan ;
+    rdfs:label "Too Good To Be True" ;
+    ait:monthlyPrice -5.00 ;
+    ait:currency "CZK" .
+
+# [S6] Model released before the model it is derived from.
+aid:BadModel_TimeTravel a ait:LanguageModel ;
+    rdfs:label "Claude Sonnet 4.5 Preview (time-travelling)" ;
+    ait:developedBy aid:Anthropic ;
+    ait:releaseDate "2024-01-01"^^xsd:date ;
+    ait:contextWindow 200000 ;
+    ait:hasLicense aid:Proprietary ;
+    ait:inputModality aid:Text ;
+    ait:outputModality aid:Text ;
+    ait:derivedFrom aid:ClaudeSonnet45 .

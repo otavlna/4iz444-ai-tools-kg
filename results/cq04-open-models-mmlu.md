@@ -1,0 +1,12 @@
+| model | license | parametersB | score |
+|---|---|---|---|
+| DeepSeek-R1 | MIT License | 671.0 | 90.8 |
+| gpt-oss-120b | Apache License 2.0 | 117.0 | 90.0 |
+| Llama 3.1 405B | Llama 3.1 Community License | 405.0 | 88.6 |
+| DeepSeek-V3 | MIT License | 671.0 | 88.5 |
+| Qwen3-235B-A22B | Apache License 2.0 | 235.0 | 87.8 |
+| Llama 4 Maverick | Llama 4 Community License | 400.0 | 85.5 |
+| Mistral Small 3.1 | Apache License 2.0 | 24.0 | 80.6 |
+| Gemma 3 27B | Gemma Terms of Use | 27.0 | 78.6 |
+
+*8 rows.*

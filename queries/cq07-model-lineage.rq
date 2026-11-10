@@ -1,0 +1,20 @@
+# CQ7: What is the complete lineage (all predecessor models) of Claude Sonnet 4.5 and
+#      of GPT-5, and how many days separate each ancestor from the model?
+#      Uses a property path to follow the transitive ait:derivedFrom relation.
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?model ?ancestor ?ancestorReleased ?daysBefore
+WHERE {
+  VALUES ?m { aid:ClaudeSonnet45 aid:GPT5 }
+  ?m rdfs:label ?model ;
+     ait:releaseDate ?released ;
+     ait:derivedFrom+ ?a .
+  ?a rdfs:label ?ancestor ;
+     ait:releaseDate ?ancestorReleased .
+  BIND (?released - ?ancestorReleased AS ?diff)
+  BIND (xsd:integer(REPLACE(STR(?diff), "^P([0-9]+)D$", "$1")) AS ?daysBefore)
+}
+ORDER BY ?model ?ancestorReleased

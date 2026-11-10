@@ -1,0 +1,18 @@
+# CQ2: Which AI models accept images as input and produce text, who develops them
+#      and in how many tools of the catalogue are they used?
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?model ?developer (COUNT(DISTINCT ?tool) AS ?usedInTools)
+WHERE {
+  ?m a/rdfs:subClassOf* ait:AIModel ;
+     rdfs:label ?model ;
+     ait:inputModality aid:Image ;
+     ait:outputModality aid:Text ;
+     ait:developedBy/rdfs:label ?developer .
+  OPTIONAL { ?tool ait:poweredBy ?m }
+}
+GROUP BY ?model ?developer
+ORDER BY DESC(?usedInTools) ?model

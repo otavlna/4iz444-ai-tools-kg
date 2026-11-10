@@ -1,0 +1,24 @@
+# CQ9: Which providers offer both text generation and image generation in their tools,
+#      and which in-house image models do these tools use?
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?provider
+       (GROUP_CONCAT(DISTINCT ?imageModel; separator=", ") AS ?imageModels)
+WHERE {
+  ?p a ait:Provider ;
+     rdfs:label ?provider .
+  ?t1 ait:providedBy ?p ; ait:supportsTask aid:TextGeneration .
+  ?t2 ait:providedBy ?p ; ait:supportsTask aid:ImageGeneration .
+  OPTIONAL {
+    ?t2 ait:poweredBy ?im .
+    ?im a ait:ImageGenerationModel ;
+        ait:developedBy ?p ;
+        rdfs:label ?imName .
+  }
+  BIND (COALESCE(?imName, "(no in-house image model)") AS ?imageModel)
+}
+GROUP BY ?provider
+ORDER BY ?provider

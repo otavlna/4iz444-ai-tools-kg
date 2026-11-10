@@ -1,0 +1,11 @@
+| provider | contextWindow | modelCount | models |
+|---|---|---|---|
+| Google | 1048576 | 3 | Gemini 2.0 Flash, Gemini 2.5 Flash, Gemini 2.5 Pro |
+| OpenAI | 1047576 | 1 | GPT-4.1 |
+| Meta | 1000000 | 1 | Llama 4 Maverick |
+| Mistral AI | 256000 | 1 | Codestral 25.01 |
+| Anthropic | 200000 | 5 | Claude 3.5 Sonnet, Claude 3.7 Sonnet, Claude Opus 4.1, Claude Sonnet 4, Claude Sonnet 4.5 |
+| Alibaba Cloud | 131072 | 1 | Qwen3-235B-A22B |
+| DeepSeek | 128000 | 2 | DeepSeek-R1, DeepSeek-V3 |
+
+*7 rows.*

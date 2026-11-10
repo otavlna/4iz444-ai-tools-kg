@@ -1,0 +1,16 @@
+# CQ1: Which AI tools support code generation and can be used inside Visual Studio Code,
+#      and who provides them?
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?tool ?provider
+WHERE {
+  ?t a ait:AITool ;
+     rdfs:label ?tool ;
+     ait:supportsTask aid:CodeGeneration ;
+     ait:integratesWith aid:VSCode ;
+     ait:providedBy/rdfs:label ?provider .
+}
+ORDER BY ?tool

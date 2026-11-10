@@ -1,0 +1,26 @@
+# CQ10: Which AI tools can be used for free and run on at least one openly licensed model?
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?tool ?freePlan (COUNT(?m) AS ?openModelCount)
+       (GROUP_CONCAT(?model; separator=", ") AS ?openModels)
+WHERE {
+  {
+    SELECT DISTINCT ?tool ?freePlan ?m ?model
+    WHERE {
+      ?t a ait:AITool ;
+         rdfs:label ?tool ;
+         ait:hasPricingPlan ?plan ;
+         ait:poweredBy ?m .
+      ?plan ait:monthlyPrice 0.00 ;
+            rdfs:label ?freePlan .
+      ?m ait:hasLicense/a ait:OpenLicense ;
+         rdfs:label ?model .
+    }
+    ORDER BY ?model
+  }
+}
+GROUP BY ?tool ?freePlan
+ORDER BY DESC(?openModelCount) ?tool

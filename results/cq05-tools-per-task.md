@@ -1,0 +1,13 @@
+| task | toolCount | tools |
+|---|---|---|
+| Code generation | 12 | ChatGPT, Claude, Claude Code, Cursor, DeepSeek Chat, Gemini, Gemini Code Assist, GitHub Copilot, Le Chat, Ollama, OpenAI Codex, Qwen Chat |
+| Conversation | 9 | ChatGPT, Claude, DeepSeek Chat, Gemini, Le Chat, Meta AI, Ollama, Perplexity, Qwen Chat |
+| Text generation | 8 | ChatGPT, Claude, DeepSeek Chat, Gemini, Le Chat, Meta AI, Ollama, Qwen Chat |
+| Web search | 6 | ChatGPT, Claude, DeepSeek Chat, Gemini, Le Chat, Perplexity |
+| Code review | 5 | Claude Code, Cursor, Gemini Code Assist, GitHub Copilot, OpenAI Codex |
+| Summarization | 5 | ChatGPT, Claude, Gemini, Le Chat, Perplexity |
+| Image generation | 4 | ChatGPT, Gemini, Meta AI, Midjourney |
+| Code completion | 3 | Cursor, Gemini Code Assist, GitHub Copilot |
+| Data analysis | 2 | ChatGPT, Claude |
+
+*9 rows.*

@@ -1,0 +1,192 @@
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix ait:    <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#> .
+@prefix aid:    <https://otavlna.github.io/4iz444-ai-tools-kg/data/> .
+@prefix aish:   <https://otavlna.github.io/4iz444-ai-tools-kg/shapes#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+# Prefix declarations used by the SPARQL-based constraint
+aish:
+    a owl:Ontology ;
+    sh:declare [ sh:prefix "ait" ; sh:namespace "https://otavlna.github.io/4iz444-ai-tools-kg/ontology#"^^xsd:anyURI ] ,
+               [ sh:prefix "rdfs" ; sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ] .
+
+#################################################################
+# S1  Every AI tool has a name, exactly one provider, at least one
+#     model, at least one supported task and at least one pricing plan.
+#################################################################
+aish:AIToolShape
+    a sh:NodeShape ;
+    sh:targetClass ait:AITool ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "An AI tool must have a name (rdfs:label of type xsd:string)." ;
+    ] , [
+        sh:path ait:providedBy ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:class ait:Provider ;
+        sh:message "An AI tool must have exactly one provider of type ait:Provider." ;
+    ] , [
+        sh:path ait:poweredBy ;
+        sh:minCount 1 ;
+        sh:class ait:AIModel ;
+        sh:message "An AI tool must be powered by at least one ait:AIModel." ;
+    ] , [
+        sh:path ait:supportsTask ;
+        sh:minCount 1 ;
+        sh:class ait:Task ;
+        sh:message "An AI tool must support at least one ait:Task." ;
+    ] , [
+        sh:path ait:hasPricingPlan ;
+        sh:minCount 1 ;
+        sh:class ait:PricingPlan ;
+        sh:message "An AI tool must have at least one pricing plan." ;
+    ] .
+
+#################################################################
+# S2  Every AI model has one developer, one release date (xsd:date),
+#     one licence, input/output modalities and - if stated - a positive
+#     context window and parameter count.
+#################################################################
+aish:AIModelShape
+    a sh:NodeShape ;
+    sh:targetClass ait:AIModel ;
+    sh:property [
+        sh:path ait:developedBy ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:class ait:Provider ;
+        sh:message "An AI model must be developed by exactly one ait:Provider." ;
+    ] , [
+        sh:path ait:releaseDate ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message "An AI model must have exactly one release date of type xsd:date." ;
+    ] , [
+        sh:path ait:hasLicense ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:class ait:License ;
+        sh:message "An AI model must have exactly one licence." ;
+    ] , [
+        sh:path ait:inputModality ;
+        sh:minCount 1 ;
+        sh:class ait:Modality ;
+        sh:message "An AI model must declare at least one input modality." ;
+    ] , [
+        sh:path ait:outputModality ;
+        sh:minCount 1 ;
+        sh:class ait:Modality ;
+        sh:message "An AI model must declare at least one output modality." ;
+    ] , [
+        sh:path ait:contextWindow ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minExclusive 0 ;
+        sh:message "The context window must be a single positive integer (number of tokens)." ;
+    ] , [
+        sh:path ait:parameterCount ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minExclusive 0 ;
+        sh:message "The parameter count must be a single positive decimal (billions of parameters)." ;
+    ] .
+
+#################################################################
+# S3  Language models must state their context window and image
+#     generation models must produce images.
+#################################################################
+aish:LanguageModelShape
+    a sh:NodeShape ;
+    sh:targetClass ait:LanguageModel ;
+    sh:property [
+        sh:path ait:contextWindow ;
+        sh:minCount 1 ;
+        sh:message "A language model must state its context window." ;
+    ] , [
+        sh:path ait:outputModality ;
+        sh:hasValue aid:Text ;
+        sh:message "A language model must produce text output." ;
+    ] .
+
+aish:ImageGenerationModelShape
+    a sh:NodeShape ;
+    sh:targetClass ait:ImageGenerationModel ;
+    sh:property [
+        sh:path ait:outputModality ;
+        sh:hasValue aid:Image ;
+        sh:message "An image generation model must produce image output." ;
+    ] .
+
+#################################################################
+# S4  Every benchmark result links exactly one model and one benchmark
+#     and has exactly one score between 0 and 100.
+#################################################################
+aish:BenchmarkResultShape
+    a sh:NodeShape ;
+    sh:targetClass ait:BenchmarkResult ;
+    sh:property [
+        sh:path ait:evaluatedModel ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:class ait:AIModel ;
+        sh:message "A benchmark result must refer to exactly one evaluated AI model." ;
+    ] , [
+        sh:path ait:onBenchmark ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:class ait:Benchmark ;
+        sh:message "A benchmark result must refer to exactly one benchmark." ;
+    ] , [
+        sh:path ait:score ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 100 ;
+        sh:message "A benchmark score must be a single decimal between 0 and 100." ;
+    ] .
+
+#################################################################
+# S5  Every pricing plan has a non-negative monthly price in a
+#     supported currency.
+#################################################################
+aish:PricingPlanShape
+    a sh:NodeShape ;
+    sh:targetClass ait:PricingPlan ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:message "A pricing plan must have a name." ;
+    ] , [
+        sh:path ait:monthlyPrice ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:message "A pricing plan must have exactly one non-negative monthly price (xsd:decimal)." ;
+    ] , [
+        sh:path ait:currency ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "USD" "EUR" ) ;
+        sh:message "The currency must be one of the supported ISO 4217 codes: USD, EUR." ;
+    ] .
+
+#################################################################
+# S6  (SPARQL-based) A model cannot be released before a model it is
+#     derived from.
+#################################################################
+aish:ModelLineageShape
+    a sh:NodeShape ;
+    sh:targetClass ait:AIModel ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Model {$this} (released {?date}) is derived from {?parent}, which was released later ({?parentDate})." ;
+        sh:prefixes aish: ;
+        sh:select """
+            SELECT $this ?parent ?date ?parentDate
+            WHERE {
+                $this ait:derivedFrom ?parent ;
+                      ait:releaseDate ?date .
+                ?parent ait:releaseDate ?parentDate .
+                FILTER (?date < ?parentDate)
+            }
+        """ ;
+    ] .

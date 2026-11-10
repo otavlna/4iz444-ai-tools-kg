@@ -1,0 +1,330 @@
+@prefix ait:     <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix schema:  <https://schema.org/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix mls:     <http://www.w3.org/ns/mls#> .
+@prefix vann:    <http://purl.org/vocab/vann/> .
+
+#################################################################
+#    Ontology header
+#################################################################
+
+<https://otavlna.github.io/4iz444-ai-tools-kg/ontology>
+    a owl:Ontology ;
+    dcterms:title "AI Tools Catalogue Ontology"@en ;
+    rdfs:label "AI Tools Catalogue Ontology"@en ;
+    rdfs:comment """Ontology describing a catalogue of AI tools (end-user products such as
+ChatGPT, Claude, Gemini, Midjourney or GitHub Copilot), the AI models that power them, their
+providers, supported tasks, input/output modalities, licences, integrations, pricing plans and
+benchmark results. Created as a semestral project for the course 4IZ444 at the Prague
+University of Economics and Business."""@en ;
+    dcterms:creator "Ota Vlna" , "Matěj Fadrhons" ;
+    dcterms:created "2026-11-10"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    vann:preferredNamespacePrefix "ait" ;
+    vann:preferredNamespaceUri "https://otavlna.github.io/4iz444-ai-tools-kg/ontology#" .
+
+#################################################################
+#    Declarations of reused external terms (needed for OWL 2 DL)
+#################################################################
+
+dcterms:title   a owl:AnnotationProperty .
+dcterms:creator a owl:AnnotationProperty .
+dcterms:created a owl:AnnotationProperty .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri    a owl:AnnotationProperty .
+skos:closeMatch a owl:AnnotationProperty .
+skos:exactMatch a owl:AnnotationProperty .
+schema:sameAs   a owl:AnnotationProperty .
+
+dcterms:license a owl:ObjectProperty .
+dcterms:issued  a owl:DatatypeProperty .
+schema:provider a owl:ObjectProperty .
+schema:creator  a owl:ObjectProperty .
+foaf:homepage   a owl:ObjectProperty .
+
+schema:SoftwareApplication a owl:Class .
+schema:Organization        a owl:Class .
+schema:Offer               a owl:Class .
+schema:Dataset             a owl:Class .
+dcterms:LicenseDocument    a owl:Class .
+mls:Model                  a owl:Class .
+mls:ModelEvaluation        a owl:Class .
+
+#################################################################
+#    Classes
+#################################################################
+
+ait:AITool
+    a owl:Class ;
+    rdfs:subClassOf schema:SoftwareApplication ;
+    rdfs:label "AI tool"@en ;
+    rdfs:comment "An end-user software product or service (web app, IDE plug-in, CLI, ...) that lets people use one or more AI models, e.g. ChatGPT, Claude, GitHub Copilot or Midjourney."@en .
+
+ait:AIModel
+    a owl:Class ;
+    rdfs:subClassOf mls:Model ;
+    rdfs:label "AI model"@en ;
+    rdfs:comment "A trained machine-learning model (a specific named release such as GPT-5 or Claude Sonnet 4.5) that can be embedded in one or more AI tools."@en .
+
+ait:LanguageModel
+    a owl:Class ;
+    rdfs:subClassOf ait:AIModel ;
+    owl:disjointWith ait:ImageGenerationModel ;
+    rdfs:label "language model"@en ;
+    rdfs:comment "An AI model whose primary output is text (including source code); it may accept other input modalities such as images or audio."@en .
+
+ait:ImageGenerationModel
+    a owl:Class ;
+    rdfs:subClassOf ait:AIModel ;
+    rdfs:label "image generation model"@en ;
+    rdfs:comment "An AI model whose primary output is images, e.g. diffusion models such as Midjourney V7 or Imagen 4."@en .
+
+ait:Provider
+    a owl:Class ;
+    rdfs:subClassOf schema:Organization ;
+    rdfs:label "provider"@en ;
+    rdfs:comment "An organisation that develops AI models and/or offers AI tools, e.g. OpenAI, Anthropic or Google."@en .
+
+ait:Task
+    a owl:Class ;
+    skos:closeMatch mls:Task ;
+    rdfs:label "task"@en ;
+    rdfs:comment "A kind of work a user can accomplish with an AI tool or that a benchmark measures, e.g. code generation, summarisation or image generation."@en .
+
+ait:Modality
+    a owl:Class ;
+    rdfs:label "modality"@en ;
+    rdfs:comment "A type of data a model can consume or produce: text, image, audio or video."@en .
+
+ait:License
+    a owl:Class ;
+    rdfs:subClassOf dcterms:LicenseDocument ;
+    rdfs:label "licence"@en ;
+    rdfs:comment "Legal terms under which an AI model (its weights) is made available."@en .
+
+ait:OpenLicense
+    a owl:Class ;
+    rdfs:subClassOf ait:License ;
+    rdfs:label "open licence"@en ;
+    rdfs:comment "A licence that allows anyone to download the model weights and run or modify the model, possibly with use restrictions (open-weights licence), e.g. Apache 2.0, MIT or the Llama Community License."@en .
+
+ait:Integration
+    a owl:Class ;
+    rdfs:label "integration"@en ;
+    rdfs:comment "A platform, application or interface through which an AI tool can be used, e.g. a web app, Visual Studio Code, Slack or a REST API."@en .
+
+ait:Benchmark
+    a owl:Class ;
+    rdfs:subClassOf schema:Dataset ;
+    rdfs:label "benchmark"@en ;
+    rdfs:comment "A standardised evaluation dataset and protocol used to compare AI models, e.g. MMLU or SWE-bench Verified."@en .
+
+ait:BenchmarkResult
+    a owl:Class ;
+    rdfs:subClassOf mls:ModelEvaluation ;
+    rdfs:label "benchmark result"@en ;
+    rdfs:comment "The score a particular AI model achieved on a particular benchmark (an n-ary relation between a model, a benchmark and a numeric score)."@en .
+
+ait:PricingPlan
+    a owl:Class ;
+    rdfs:subClassOf schema:Offer ;
+    rdfs:label "pricing plan"@en ;
+    rdfs:comment "A subscription tier under which an AI tool is offered to individual users or teams, with a monthly price (0 for free tiers)."@en .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ait:AITool ait:AIModel ait:Provider ait:Task ait:Modality ait:License
+                  ait:Integration ait:Benchmark ait:BenchmarkResult ait:PricingPlan ) .
+
+#################################################################
+#    Object properties
+#################################################################
+
+ait:providedBy
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:subPropertyOf schema:provider ;
+    rdfs:domain ait:AITool ;
+    rdfs:range ait:Provider ;
+    rdfs:label "provided by"@en ;
+    rdfs:comment "The organisation that operates and offers the AI tool. Every tool has exactly one provider."@en .
+
+ait:poweredBy
+    a owl:ObjectProperty ;
+    rdfs:domain ait:AITool ;
+    rdfs:range ait:AIModel ;
+    rdfs:label "powered by"@en ;
+    rdfs:comment "An AI model that the tool uses to produce its outputs. A tool may use several models, possibly from other providers."@en .
+
+ait:developedBy
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf schema:creator ;
+    owl:inverseOf ait:develops ;
+    rdfs:domain ait:AIModel ;
+    rdfs:range ait:Provider ;
+    rdfs:label "developed by"@en ;
+    rdfs:comment "The organisation that trained and released the AI model."@en .
+
+ait:develops
+    a owl:ObjectProperty ;
+    rdfs:domain ait:Provider ;
+    rdfs:range ait:AIModel ;
+    rdfs:label "develops"@en ;
+    rdfs:comment "Inverse of 'developed by': an AI model trained and released by the provider."@en .
+
+ait:supportsTask
+    a owl:ObjectProperty ;
+    rdfs:domain ait:AITool ;
+    rdfs:range ait:Task ;
+    rdfs:label "supports task"@en ;
+    rdfs:comment "A task that users can accomplish with the AI tool."@en .
+
+ait:inputModality
+    a owl:ObjectProperty ;
+    rdfs:domain ait:AIModel ;
+    rdfs:range ait:Modality ;
+    rdfs:label "input modality"@en ;
+    rdfs:comment "A modality the AI model accepts as input."@en .
+
+ait:outputModality
+    a owl:ObjectProperty ;
+    rdfs:domain ait:AIModel ;
+    rdfs:range ait:Modality ;
+    rdfs:label "output modality"@en ;
+    rdfs:comment "A modality the AI model produces as output."@en .
+
+ait:hasLicense
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf dcterms:license ;
+    rdfs:domain ait:AIModel ;
+    rdfs:range ait:License ;
+    rdfs:label "has licence"@en ;
+    rdfs:comment "The licence under which the AI model is made available."@en .
+
+ait:integratesWith
+    a owl:ObjectProperty ;
+    rdfs:domain ait:AITool ;
+    rdfs:range ait:Integration ;
+    rdfs:label "integrates with"@en ;
+    rdfs:comment "A platform or interface through which the AI tool can be used."@en .
+
+ait:hasPricingPlan
+    a owl:ObjectProperty ;
+    rdfs:domain ait:AITool ;
+    rdfs:range ait:PricingPlan ;
+    rdfs:label "has pricing plan"@en ;
+    rdfs:comment "A pricing plan under which the AI tool is available. One plan may cover several tools of the same provider (e.g. a single subscription for a chat app and a coding agent)."@en .
+
+ait:evaluatedModel
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:BenchmarkResult ;
+    rdfs:range ait:AIModel ;
+    rdfs:label "evaluated model"@en ;
+    rdfs:comment "The AI model whose performance the benchmark result records."@en .
+
+ait:onBenchmark
+    a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:BenchmarkResult ;
+    rdfs:range ait:Benchmark ;
+    rdfs:label "on benchmark"@en ;
+    rdfs:comment "The benchmark on which the result was obtained."@en .
+
+ait:measuresTask
+    a owl:ObjectProperty ;
+    rdfs:domain ait:Benchmark ;
+    rdfs:range ait:Task ;
+    rdfs:label "measures task"@en ;
+    rdfs:comment "The task whose quality the benchmark is designed to measure."@en .
+
+ait:derivedFrom
+    a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:domain ait:AIModel ;
+    rdfs:range ait:AIModel ;
+    rdfs:label "derived from"@en ;
+    rdfs:comment "The model is a successor, fine-tune or other derivative of the referenced earlier model. Transitive: following the chain yields the whole model lineage."@en .
+
+ait:competesWith
+    a owl:ObjectProperty , owl:SymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:domain ait:AITool ;
+    rdfs:range ait:AITool ;
+    rdfs:label "competes with"@en ;
+    rdfs:comment "The two AI tools target the same users and use case and are direct market competitors. Symmetric and irreflexive."@en .
+
+#################################################################
+#    Datatype properties
+#################################################################
+
+ait:releaseDate
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:subPropertyOf dcterms:issued ;
+    rdfs:domain [ a owl:Class ; owl:unionOf ( ait:AITool ait:AIModel ) ] ;
+    rdfs:range xsd:date ;
+    rdfs:label "release date"@en ;
+    rdfs:comment "Date on which the AI model or AI tool was first made publicly available."@en .
+
+ait:contextWindow
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:LanguageModel ;
+    rdfs:range xsd:integer ;
+    rdfs:label "context window"@en ;
+    rdfs:comment "Maximum number of tokens the language model can process in a single request (input plus output)."@en .
+
+ait:parameterCount
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:AIModel ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "parameter count (billions)"@en ;
+    rdfs:comment "Total number of model parameters in billions; only known for models whose architecture has been published (typically open-weights models)."@en .
+
+ait:score
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:BenchmarkResult ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "score"@en ;
+    rdfs:comment "Numeric result of the evaluation expressed in percent (0-100) according to the benchmark's metric."@en .
+
+ait:metric
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:Benchmark ;
+    rdfs:range xsd:string ;
+    rdfs:label "metric"@en ;
+    rdfs:comment "Name of the metric in which benchmark scores are expressed, e.g. 'accuracy' or 'pass@1'."@en .
+
+ait:monthlyPrice
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:PricingPlan ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "monthly price"@en ;
+    rdfs:comment "Price of the plan per user per month when billed monthly; 0 for free tiers."@en .
+
+ait:currency
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:PricingPlan ;
+    rdfs:range xsd:string ;
+    rdfs:label "currency"@en ;
+    rdfs:comment "ISO 4217 code of the currency in which the monthly price is stated, e.g. 'USD'."@en .
+
+ait:foundedYear
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:Provider ;
+    rdfs:range xsd:gYear ;
+    rdfs:label "founded year"@en ;
+    rdfs:comment "Year in which the provider organisation was founded."@en .
+
+ait:headquartersCountry
+    a owl:DatatypeProperty ;
+    rdfs:domain ait:Provider ;
+    rdfs:range xsd:string ;
+    rdfs:label "headquarters country"@en ;
+    rdfs:comment "Name of the country in which the provider has its headquarters."@en .
+
+ait:spdxId
+    a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:domain ait:License ;
+    rdfs:range xsd:string ;
+    rdfs:label "SPDX identifier"@en ;
+    rdfs:comment "Short identifier of the licence from the SPDX License List (e.g. 'Apache-2.0'), or a LicenseRef- identifier for licences not on the list."@en .

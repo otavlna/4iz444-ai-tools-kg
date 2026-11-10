@@ -1,0 +1,17 @@
+# Q14 (data-gap analysis): Which language models used by at least one tool have no
+#      benchmark result in the graph yet?
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?model ?developer (COUNT(DISTINCT ?t) AS ?usedInTools)
+WHERE {
+  ?m a ait:LanguageModel ;
+     rdfs:label ?model ;
+     ait:developedBy/rdfs:label ?developer .
+  ?t ait:poweredBy ?m .
+  FILTER NOT EXISTS { ?r ait:evaluatedModel ?m }
+}
+GROUP BY ?model ?developer
+ORDER BY DESC(?usedInTools) ?model

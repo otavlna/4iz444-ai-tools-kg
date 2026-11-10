@@ -1,0 +1,17 @@
+# Q15 (CONSTRUCT): Derive a direct "tool depends on provider" link for every tool that uses
+#      a model developed by another provider. The result is a new RDF graph that could be
+#      added to the knowledge graph as materialised knowledge.
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+PREFIX schema: <https://schema.org/>
+CONSTRUCT {
+  ?t schema:isBasedOn ?mp .
+}
+WHERE {
+  ?t ait:providedBy ?tp ;
+     ait:poweredBy/ait:developedBy ?mp .
+  FILTER (?tp != ?mp)
+}

@@ -1,0 +1,16 @@
+tool,competitors,sharingModel,competitorNames
+ChatGPT,5,1,"Claude, DeepSeek Chat, Gemini, Le Chat, Perplexity"
+Gemini,4,1,"ChatGPT, Claude, Meta AI, Perplexity"
+GitHub Copilot,4,4,"Claude Code, Cursor, Gemini Code Assist, OpenAI Codex"
+Claude,3,0,"ChatGPT, Gemini, Le Chat"
+Claude Code,3,2,"Cursor, GitHub Copilot, OpenAI Codex"
+Cursor,3,3,"Claude Code, GitHub Copilot, OpenAI Codex"
+OpenAI Codex,3,2,"Claude Code, Cursor, GitHub Copilot"
+DeepSeek Chat,2,0,"ChatGPT, Qwen Chat"
+Le Chat,2,0,"ChatGPT, Claude"
+Perplexity,2,2,"ChatGPT, Gemini"
+Gemini Code Assist,1,1,GitHub Copilot
+Meta AI,1,0,Gemini
+Qwen Chat,1,0,DeepSeek Chat
+Midjourney,0,0,-
+Ollama,0,0,-

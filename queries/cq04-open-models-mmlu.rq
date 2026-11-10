@@ -1,0 +1,19 @@
+# CQ4: Which openly licensed (open-weights) models perform best on MMLU,
+#      and how large are they?
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?model ?license ?parametersB ?score
+WHERE {
+  ?m ait:hasLicense ?l ;
+     rdfs:label ?model .
+  ?l a ait:OpenLicense ;
+     rdfs:label ?license .
+  OPTIONAL { ?m ait:parameterCount ?parametersB }
+  ?r ait:evaluatedModel ?m ;
+     ait:onBenchmark aid:MMLU ;
+     ait:score ?score .
+}
+ORDER BY DESC(?score)

@@ -1,0 +1,96 @@
+Validation Report
+Conforms: False
+Results (13):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class ait:AIModel ; sh:message Literal("An AI tool must be powered by at least one ait:AIModel.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:poweredBy ]
+	Focus Node: aid:BadTool_WrongModel
+	Value Node: aid:OpenAI
+	Result Path: ait:poweredBy
+	Message: An AI tool must be powered by at least one ait:AIModel.
+Constraint Violation in DatatypeConstraintComponent (http://www.w3.org/ns/shacl#DatatypeConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:date ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("An AI model must have exactly one release date of type xsd:date.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:releaseDate ]
+	Focus Node: aid:BadModel_Types
+	Value Node: Literal("next spring")
+	Result Path: ait:releaseDate
+	Message: An AI model must have exactly one release date of type xsd:date.
+Constraint Violation in HasValueConstraintComponent (http://www.w3.org/ns/shacl#HasValueConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:hasValue aid:Image ; sh:message Literal("An image generation model must produce image output.") ; sh:path ait:outputModality ]
+	Focus Node: aid:BadModel_NoImage
+	Result Path: ait:outputModality
+	Message: An image generation model must produce image output.
+Constraint Violation in HasValueConstraintComponent (http://www.w3.org/ns/shacl#HasValueConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:hasValue aid:Text ; sh:message Literal("A language model must produce text output.") ; sh:path ait:outputModality ]
+	Focus Node: aid:BadModel_Types
+	Result Path: ait:outputModality
+	Message: A language model must produce text output.
+Constraint Violation in InConstraintComponent (http://www.w3.org/ns/shacl#InConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:in ( Literal("USD") Literal("EUR") ) ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("The currency must be one of the supported ISO 4217 codes: USD, EUR.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:currency ]
+	Focus Node: aid:BadPlan_Price
+	Value Node: Literal("CZK")
+	Result Path: ait:currency
+	Message: The currency must be one of the supported ISO 4217 codes: USD, EUR.
+Constraint Violation in MaxInclusiveConstraintComponent (http://www.w3.org/ns/shacl#MaxInclusiveConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:decimal ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:maxInclusive Literal("100", datatype=xsd:integer) ; sh:message Literal("A benchmark score must be a single decimal between 0 and 100.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:minInclusive Literal("0", datatype=xsd:integer) ; sh:path ait:score ]
+	Focus Node: aid:BadResult_Score
+	Value Node: Literal("112.5", datatype=xsd:decimal)
+	Result Path: ait:score
+	Message: A benchmark score must be a single decimal between 0 and 100.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class ait:Benchmark ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("A benchmark result must refer to exactly one benchmark.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:onBenchmark ]
+	Focus Node: aid:BadResult_Score
+	Result Path: ait:onBenchmark
+	Message: A benchmark result must refer to exactly one benchmark.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class ait:License ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("An AI model must have exactly one licence.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:hasLicense ]
+	Focus Node: aid:BadModel_Types
+	Result Path: ait:hasLicense
+	Message: An AI model must have exactly one licence.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class ait:PricingPlan ; sh:message Literal("An AI tool must have at least one pricing plan.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:hasPricingPlan ]
+	Focus Node: aid:BadTool_NoProvider
+	Result Path: ait:hasPricingPlan
+	Message: An AI tool must have at least one pricing plan.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class ait:Provider ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("An AI tool must have exactly one provider of type ait:Provider.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:providedBy ]
+	Focus Node: aid:BadTool_NoProvider
+	Result Path: ait:providedBy
+	Message: An AI tool must have exactly one provider of type ait:Provider.
+Constraint Violation in MinExclusiveConstraintComponent (http://www.w3.org/ns/shacl#MinExclusiveConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:integer ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("The context window must be a single positive integer (number of tokens).") ; sh:minExclusive Literal("0", datatype=xsd:integer) ; sh:path ait:contextWindow ]
+	Focus Node: aid:BadModel_Types
+	Value Node: Literal("-4096", datatype=xsd:integer)
+	Result Path: ait:contextWindow
+	Message: The context window must be a single positive integer (number of tokens).
+Constraint Violation in MinInclusiveConstraintComponent (http://www.w3.org/ns/shacl#MinInclusiveConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:decimal ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("A pricing plan must have exactly one non-negative monthly price (xsd:decimal).") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:minInclusive Literal("0", datatype=xsd:integer) ; sh:path ait:monthlyPrice ]
+	Focus Node: aid:BadPlan_Price
+	Value Node: Literal("-5.00", datatype=xsd:decimal)
+	Result Path: ait:monthlyPrice
+	Message: A pricing plan must have exactly one non-negative monthly price (xsd:decimal).
+Constraint Violation in SPARQLConstraintComponent (http://www.w3.org/ns/shacl#SPARQLConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: aish:ModelLineageShape
+	Focus Node: aid:BadModel_TimeTravel
+	Value Node: aid:BadModel_TimeTravel
+	Source Constraint: [ rdf:type sh:SPARQLConstraint ; sh:message Literal("Model {$this} (released {?date}) is derived from {?parent}, which was released later ({?parentDate}).") ; sh:prefixes <https://otavlna.github.io/4iz444-ai-tools-kg/shapes#> ; sh:select Literal("
+            SELECT $this ?parent ?date ?parentDate
+            WHERE {
+                $this ait:derivedFrom ?parent ;
+                      ait:releaseDate ?date .
+                ?parent ait:releaseDate ?parentDate .
+                FILTER (?date < ?parentDate)
+            }
+        ") ]
+	Message: Model https://otavlna.github.io/4iz444-ai-tools-kg/data/BadModel_TimeTravel (released 2024-01-01) is derived from https://otavlna.github.io/4iz444-ai-tools-kg/data/ClaudeSonnet45, which was released later (2025-09-29).

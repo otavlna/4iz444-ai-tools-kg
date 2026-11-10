@@ -1,0 +1,22 @@
+@prefix aid: <https://otavlna.github.io/4iz444-ai-tools-kg/data/> .
+@prefix schema: <https://schema.org/> .
+
+aid:Cursor schema:isBasedOn aid:Anthropic,
+        aid:Google,
+        aid:OpenAI .
+
+aid:GitHubCopilot schema:isBasedOn aid:Anthropic,
+        aid:Google,
+        aid:OpenAI .
+
+aid:Ollama schema:isBasedOn aid:Alibaba,
+        aid:DeepSeek,
+        aid:Google,
+        aid:Meta,
+        aid:MistralAI,
+        aid:OpenAI .
+
+aid:Perplexity schema:isBasedOn aid:Anthropic,
+        aid:Google,
+        aid:OpenAI .
+

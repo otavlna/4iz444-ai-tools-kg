@@ -1,0 +1,28 @@
+# CQ6: Which AI tools are powered by models developed by a different provider than
+#      the one offering the tool, and which external providers do they depend on?
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?tool ?toolProvider
+       (COUNT(DISTINCT ?m) AS ?externalModels)
+       (GROUP_CONCAT(DISTINCT ?modelProvider; separator=", ") AS ?dependsOn)
+WHERE {
+  {
+    SELECT ?tool ?toolProvider ?m ?modelProvider
+    WHERE {
+      ?t a ait:AITool ;
+         rdfs:label ?tool ;
+         ait:providedBy ?tp ;
+         ait:poweredBy ?m .
+      ?tp rdfs:label ?toolProvider .
+      ?m ait:developedBy ?mp .
+      ?mp rdfs:label ?modelProvider .
+      FILTER (?tp != ?mp)
+    }
+    ORDER BY ?modelProvider
+  }
+}
+GROUP BY ?tool ?toolProvider
+ORDER BY DESC(?externalModels) ?tool

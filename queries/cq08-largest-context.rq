@@ -1,0 +1,33 @@
+# CQ8: Which language model(s) have the largest context window for each provider?
+#      A sub-query computes the per-provider maximum; ties are listed together.
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?provider ?contextWindow (COUNT(?m) AS ?modelCount)
+       (GROUP_CONCAT(?model; separator=", ") AS ?models)
+WHERE {
+  {
+    SELECT ?p (MAX(?cw) AS ?contextWindow)
+    WHERE {
+      ?x a ait:LanguageModel ;
+         ait:developedBy ?p ;
+         ait:contextWindow ?cw .
+    }
+    GROUP BY ?p
+  }
+  {
+    SELECT ?p ?m ?model ?contextWindow
+    WHERE {
+      ?m a ait:LanguageModel ;
+         ait:developedBy ?p ;
+         ait:contextWindow ?contextWindow ;
+         rdfs:label ?model .
+    }
+    ORDER BY ?model
+  }
+  ?p rdfs:label ?provider .
+}
+GROUP BY ?provider ?contextWindow
+ORDER BY DESC(?contextWindow) ?provider

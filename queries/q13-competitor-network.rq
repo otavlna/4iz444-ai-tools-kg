@@ -1,0 +1,29 @@
+# Q13 (symmetric property, EXISTS): For each tool, how many competitors does it have
+#      (ait:competesWith is symmetric, so both directions are followed), and how many of
+#      those competitors share at least one underlying model with it?
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?tool (COUNT(?c) AS ?competitors)
+       (SUM(?shares) AS ?sharingModel)
+       (GROUP_CONCAT(?competitor; separator=", ") AS ?competitorNames)
+WHERE {
+  {
+    SELECT ?tool ?c ?competitor ?shares
+    WHERE {
+      ?t a ait:AITool ; rdfs:label ?tool .
+      OPTIONAL {
+        ?t ait:competesWith|^ait:competesWith ?c .
+        ?c rdfs:label ?competitorName .
+      }
+      BIND (COALESCE(?competitorName, "-") AS ?competitor)
+      # 1 if the tool and its competitor use at least one common model, otherwise 0
+      BIND (IF(BOUND(?c) && EXISTS { ?t ait:poweredBy ?x . ?c ait:poweredBy ?x . }, 1, 0) AS ?shares)
+    }
+    ORDER BY ?competitor
+  }
+}
+GROUP BY ?tool
+ORDER BY DESC(?competitors) ?tool

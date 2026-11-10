@@ -1,0 +1,23 @@
+# Q11 (analytical): For every benchmark, compare each provider's best model with the
+#      benchmark-wide average score and report the difference in percentage points.
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?benchmark ?provider (MAX(?score) AS ?bestScore) ?benchmarkAvg
+       (ROUND((MAX(?score) - ?benchmarkAvg) * 10) / 10 AS ?diffToAvg)
+WHERE {
+  {
+    SELECT ?b (ROUND(AVG(?s) * 10) / 10 AS ?benchmarkAvg) (COUNT(?r2) AS ?n)
+    WHERE { ?r2 ait:onBenchmark ?b ; ait:score ?s . }
+    GROUP BY ?b
+  }
+  ?r ait:onBenchmark ?b ;
+     ait:score ?score ;
+     ait:evaluatedModel/ait:developedBy/rdfs:label ?provider .
+  ?b rdfs:label ?benchmark .
+  FILTER (?n >= 5)
+}
+GROUP BY ?benchmark ?provider ?benchmarkAvg
+ORDER BY ?benchmark DESC(?bestScore)

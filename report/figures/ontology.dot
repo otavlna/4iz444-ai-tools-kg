@@ -1,0 +1,38 @@
+digraph G {
+  rankdir=LR; splines=true; nodesep=0.5; ranksep=1.1;
+  graph [fontname="Helvetica", pad=0.3, bgcolor="white"];
+  node [shape=plain, fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=9, color="#3b5b8c", fontcolor="#1f3a66"];
+  "AIModel" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>AIModel</B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">parameterCount : xsd:decimal [F]</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">releaseDate : xsd:date [F]</FONT></TD></TR></TABLE>>];
+  "AITool" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>AITool</B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">releaseDate : xsd:date [F]</FONT></TD></TR></TABLE>>];
+  "Benchmark" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>Benchmark</B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">metric : xsd:string [F]</FONT></TD></TR></TABLE>>];
+  "BenchmarkResult" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>BenchmarkResult</B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">score : xsd:decimal [F]</FONT></TD></TR></TABLE>>];
+  "ImageGenerationModel" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fff4d6"><TR><TD><B>ImageGenerationModel</B></TD></TR></TABLE>>];
+  "Integration" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>Integration</B></TD></TR></TABLE>>];
+  "LanguageModel" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fff4d6"><TR><TD><B>LanguageModel</B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">contextWindow : xsd:integer [F]</FONT></TD></TR></TABLE>>];
+  "License" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>License</B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">spdxId : xsd:string [F]</FONT></TD></TR></TABLE>>];
+  "Modality" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>Modality</B></TD></TR></TABLE>>];
+  "OpenLicense" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#fff4d6"><TR><TD><B>OpenLicense</B></TD></TR></TABLE>>];
+  "PricingPlan" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>PricingPlan</B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">currency : xsd:string [F]</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">monthlyPrice : xsd:decimal [F]</FONT></TD></TR></TABLE>>];
+  "Provider" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>Provider</B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">foundedYear : xsd:gYear [F]</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9">headquartersCountry : xsd:string</FONT></TD></TR></TABLE>>];
+  "Task" [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="#e3ecfa"><TR><TD><B>Task</B></TD></TR></TABLE>>];
+  "AITool" -> "AITool" [label="competesWith [S,I]"];
+  "AIModel" -> "AIModel" [label="derivedFrom [T]"];
+  "AIModel" -> "Provider" [label="developedBy
+(inverse: develops)"];
+  "BenchmarkResult" -> "AIModel" [label="evaluatedModel [F]"];
+  "AIModel" -> "License" [label="hasLicense"];
+  "AITool" -> "PricingPlan" [label="hasPricingPlan"];
+  "AIModel" -> "Modality" [label="inputModality"];
+  "AITool" -> "Integration" [label="integratesWith"];
+  "Benchmark" -> "Task" [label="measuresTask"];
+  "BenchmarkResult" -> "Benchmark" [label="onBenchmark [F]"];
+  "AIModel" -> "Modality" [label="outputModality"];
+  "AITool" -> "AIModel" [label="poweredBy"];
+  "AITool" -> "Provider" [label="providedBy [F]"];
+  "AITool" -> "Task" [label="supportsTask"];
+  "ImageGenerationModel" -> "AIModel" [arrowhead=empty, style=dashed, color="#888888", label="subClassOf", fontcolor="#666666"];
+  "LanguageModel" -> "AIModel" [arrowhead=empty, style=dashed, color="#888888", label="subClassOf", fontcolor="#666666"];
+  "OpenLicense" -> "License" [arrowhead=empty, style=dashed, color="#888888", label="subClassOf", fontcolor="#666666"];
+  "LanguageModel" -> "ImageGenerationModel" [dir=both, arrowhead=none, arrowtail=none, style=dotted, color="#b03030", label="disjointWith", fontcolor="#b03030", constraint=false];
+}

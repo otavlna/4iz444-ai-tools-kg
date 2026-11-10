@@ -1,0 +1,22 @@
+# CQ5: How many AI tools support each task, and which ones?
+#      (The inner sub-query sorts the rows so that GROUP_CONCAT lists tools alphabetically.)
+PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
+PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?task (COUNT(?t) AS ?toolCount)
+       (GROUP_CONCAT(?tool; separator=", ") AS ?tools)
+WHERE {
+  {
+    SELECT ?task ?t ?tool
+    WHERE {
+      ?t ait:supportsTask ?tk ;
+         rdfs:label ?tool .
+      ?tk rdfs:label ?task .
+    }
+    ORDER BY ?tool
+  }
+}
+GROUP BY ?task
+ORDER BY DESC(?toolCount) ?task
