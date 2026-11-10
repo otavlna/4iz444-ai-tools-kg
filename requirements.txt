@@ -1,3 +1,5 @@
 rdflib>=7.1
 pyshacl>=0.30
 owlrl>=7.1
+lxml>=5.0
+pypdfium2>=4.0

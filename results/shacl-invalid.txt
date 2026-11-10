@@ -1,6 +1,6 @@
 Validation Report
 Conforms: False
-Results (13):
+Results (20):
 Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
 	Severity: sh:Violation
 	Source Shape: [ sh:class ait:AIModel ; sh:message Literal("An AI tool must be powered by at least one ait:AIModel.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:poweredBy ]
@@ -15,6 +15,13 @@ Constraint Violation in DatatypeConstraintComponent (http://www.w3.org/ns/shacl#
 	Value Node: Literal("next spring")
 	Result Path: ait:releaseDate
 	Message: An AI model must have exactly one release date of type xsd:date.
+Constraint Violation in DatatypeConstraintComponent (http://www.w3.org/ns/shacl#DatatypeConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:gYear ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("The founding year must be a single value of type xsd:gYear.") ; sh:path ait:foundedYear ]
+	Focus Node: aid:BadProvider
+	Value Node: Literal("2024", datatype=xsd:integer)
+	Result Path: ait:foundedYear
+	Message: The founding year must be a single value of type xsd:gYear.
 Constraint Violation in HasValueConstraintComponent (http://www.w3.org/ns/shacl#HasValueConstraintComponent):
 	Severity: sh:Violation
 	Source Shape: [ sh:hasValue aid:Image ; sh:message Literal("An image generation model must produce image output.") ; sh:path ait:outputModality ]
@@ -34,6 +41,12 @@ Constraint Violation in InConstraintComponent (http://www.w3.org/ns/shacl#InCons
 	Value Node: Literal("CZK")
 	Result Path: ait:currency
 	Message: The currency must be one of the supported ISO 4217 codes: USD, EUR.
+Constraint Violation in MaxCountConstraintComponent (http://www.w3.org/ns/shacl#MaxCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("A task, modality or integration must have exactly one name.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:label ]
+	Focus Node: aid:BadTask
+	Result Path: rdfs:label
+	Message: A task, modality or integration must have exactly one name.
 Constraint Violation in MaxInclusiveConstraintComponent (http://www.w3.org/ns/shacl#MaxInclusiveConstraintComponent):
 	Severity: sh:Violation
 	Source Shape: [ sh:datatype xsd:decimal ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:maxInclusive Literal("100", datatype=xsd:integer) ; sh:message Literal("A benchmark score must be a single decimal between 0 and 100.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:minInclusive Literal("0", datatype=xsd:integer) ; sh:path ait:score ]
@@ -65,6 +78,24 @@ Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#
 	Focus Node: aid:BadTool_NoProvider
 	Result Path: ait:providedBy
 	Message: An AI tool must have exactly one provider of type ait:Provider.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class ait:Task ; sh:message Literal("A benchmark must measure at least one ait:Task.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:measuresTask ]
+	Focus Node: aid:BadBenchmark
+	Result Path: ait:measuresTask
+	Message: A benchmark must measure at least one ait:Task.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("A benchmark must state exactly one metric.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:metric ]
+	Focus Node: aid:BadBenchmark
+	Result Path: ait:metric
+	Message: A benchmark must state exactly one metric.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("A provider must state its headquarters country.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:headquartersCountry ]
+	Focus Node: aid:BadProvider
+	Result Path: ait:headquartersCountry
+	Message: A provider must state its headquarters country.
 Constraint Violation in MinExclusiveConstraintComponent (http://www.w3.org/ns/shacl#MinExclusiveConstraintComponent):
 	Severity: sh:Violation
 	Source Shape: [ sh:datatype xsd:integer ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("The context window must be a single positive integer (number of tokens).") ; sh:minExclusive Literal("0", datatype=xsd:integer) ; sh:path ait:contextWindow ]
@@ -79,6 +110,20 @@ Constraint Violation in MinInclusiveConstraintComponent (http://www.w3.org/ns/sh
 	Value Node: Literal("-5.00", datatype=xsd:decimal)
 	Result Path: ait:monthlyPrice
 	Message: A pricing plan must have exactly one non-negative monthly price (xsd:decimal).
+Constraint Violation in NodeKindConstraintComponent (http://www.w3.org/ns/shacl#NodeKindConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("A homepage must be an IRI, not a literal.") ; sh:nodeKind sh:IRI ; sh:path foaf:homepage ]
+	Focus Node: aid:BadProvider
+	Value Node: Literal("https://shady.example")
+	Result Path: foaf:homepage
+	Message: A homepage must be an IRI, not a literal.
+Constraint Violation in PatternConstraintComponent (http://www.w3.org/ns/shacl#PatternConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("A licence must have exactly one valid SPDX identifier (e.g. 'Apache-2.0' or 'LicenseRef-Proprietary').") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path ait:spdxId ; sh:pattern Literal("^(LicenseRef-[A-Za-z0-9.-]+|[A-Za-z0-9][A-Za-z0-9.+-]*)$") ]
+	Focus Node: aid:BadLicense
+	Value Node: Literal("Do Whatever You Want")
+	Result Path: ait:spdxId
+	Message: A licence must have exactly one valid SPDX identifier (e.g. 'Apache-2.0' or 'LicenseRef-Proprietary').
 Constraint Violation in SPARQLConstraintComponent (http://www.w3.org/ns/shacl#SPARQLConstraintComponent):
 	Severity: sh:Violation
 	Source Shape: aish:ModelLineageShape

@@ -49,6 +49,7 @@ PREFIXES = {
     str(XSD): "xsd:",
     str(RDFS): "rdfs:",
     "https://schema.org/": "schema:",
+    "http://xmlns.com/foaf/0.1/": "foaf:",
 }
 
 errors: list[str] = []
@@ -138,7 +139,7 @@ def consistency_check(onto: Graph, data: Graph) -> tuple[list[str], int]:
 
 
 # --------------------------------------------------------------------------- 4
-def statistics(onto: Graph, data: Graph) -> str:
+def statistics(onto: Graph, data: Graph) -> tuple[str, str]:
     g = onto + data
     rows = []
     q = """
@@ -157,29 +158,47 @@ def statistics(onto: Graph, data: Graph) -> str:
     n_op = len([c for c in onto.subjects(RDF.type, OWL.ObjectProperty) if str(c).startswith(str(AIT))])
     n_dp = len([c for c in onto.subjects(RDF.type, OWL.DatatypeProperty) if str(c).startswith(str(AIT))])
     used = {p for p in preds if p.startswith("ait:")}
-    out = io.StringIO()
-    out.write("| Metric | Value |\n|---|---:|\n")
-    out.write(f"| Triples in the ontology | {len(onto)} |\n")
-    out.write(f"| Triples in the knowledge graph (data) | {len(data)} |\n")
-    out.write(f"| Classes defined (`ait:`) | {n_classes} |\n")
-    out.write(f"| Object properties defined | {n_op} |\n")
-    out.write(f"| Datatype properties defined | {n_dp} |\n")
-    out.write(f"| `ait:` properties used in data | {len(used)} of {n_op + n_dp} |\n")
-    out.write(f"| Distinct subjects in data | {len(set(data.subjects()))} |\n\n")
-    out.write("| Class (incl. subclasses) | Instances |\n|---|---:|\n")
+    summary = io.StringIO()
+    summary.write("| Metric | Value |\n|---|---:|\n")
+    summary.write(f"| Triples in the ontology | {len(onto)} |\n")
+    summary.write(f"| Triples in the knowledge graph (data) | {len(data)} |\n")
+    summary.write(f"| Classes defined (`ait:`) | {n_classes} |\n")
+    summary.write(f"| Object properties defined | {n_op} |\n")
+    summary.write(f"| Datatype properties defined | {n_dp} |\n")
+    summary.write(f"| `ait:` properties used in data | {len(used)} of {n_op + n_dp} |\n")
+    summary.write(f"| Distinct subjects in data | {len(set(data.subjects()))} |\n")
+    classes = io.StringIO()
+    classes.write("| Class | Instances |\n|---|---:|\n")
     for c, n in rows:
-        out.write(f"| `{c}` | {n} |\n")
-    unused = sorted({short(p) for p in list(onto.subjects(RDF.type, OWL.ObjectProperty)) +
-                     list(onto.subjects(RDF.type, OWL.DatatypeProperty))
-                     if str(p).startswith(str(AIT))} - used)
-    if unused:
-        out.write(f"\nProperties not asserted directly in the data: {', '.join('`'+u+'`' for u in unused)}.\n")
-    return out.getvalue()
+        classes.write(f"| `{c}` | {n} |\n")
+    return summary.getvalue(), classes.getvalue()
 
 
 # --------------------------------------------------------------------------- 5
 def md_escape(v: str) -> str:
     return v.replace("|", "\\|").replace("\n", " ")
+
+
+NUMERIC = {XSD.decimal, XSD.double, XSD.float}
+
+
+def format_decimal_columns(raw: list[list], rows: list[list[str]]) -> None:
+    """Give every value of a decimal column the same number of decimal places
+    (e.g. 110 -> 110.00 when other values are 97.59), as required for tables."""
+    if not rows:
+        return
+    for j in range(len(rows[0])):
+        vals = [row[j] for row in raw if row[j] is not None]
+        if not vals or not all(isinstance(v, Literal) and v.datatype in NUMERIC | {XSD.integer}
+                               for v in vals):
+            continue
+        if not any(v.datatype in NUMERIC for v in vals):
+            continue  # pure integer column (counts) - keep as is
+        places = max(len(rows[i][j].split(".")[1]) if "." in rows[i][j] else 0
+                     for i in range(len(rows)) if raw[i][j] is not None)
+        for i in range(len(rows)):
+            if raw[i][j] is not None:
+                rows[i][j] = f"{float(raw[i][j]):.{places}f}"
 
 
 def run_queries(g: Graph) -> dict[str, dict]:
@@ -199,10 +218,13 @@ def run_queries(g: Graph) -> dict[str, dict]:
             (RESULTS / f"{f.stem}.ttl").write_text(ttl)
             body = "\n".join(l for l in ttl.splitlines() if not l.startswith("@prefix")).strip()
             md = f"*{len(cg)} triples constructed:*\n\n```turtle\n{body}\n```\n"
+            table_md = f"```turtle\n{body}\n```\n"
             n = len(cg)
         else:
             vars_ = [str(v) for v in res.vars]
-            rows = [[short(r[v]) for v in vars_] for r in res]
+            raw = [[r[v] for v in vars_] for r in res]
+            rows = [[short(c) for c in row] for row in raw]
+            format_decimal_columns(raw, rows)
             with open(RESULTS / f"{f.stem}.csv", "w", newline="") as fh:
                 w = csv.writer(fh)
                 w.writerow(vars_)
@@ -210,6 +232,7 @@ def run_queries(g: Graph) -> dict[str, dict]:
             md = "| " + " | ".join(vars_) + " |\n|" + "---|" * len(vars_) + "\n"
             for r in rows:
                 md += "| " + " | ".join(md_escape(c) for c in r) + " |\n"
+            table_md = md
             md += f"\n*{len(rows)} rows.*\n"
             n = len(rows)
         (RESULTS / f"{f.stem}.md").write_text(md)
@@ -221,7 +244,8 @@ def run_queries(g: Graph) -> dict[str, dict]:
         common = ("PREFIX ait:", "PREFIX aid:", "PREFIX rdfs:", "PREFIX xsd:")
         q_lines = [l for l in q_lines if not l.startswith(common)]
         out[key] = {"file": f.name, "query": "\n".join(q_lines).strip(),
-                    "title": " ".join(comment), "result": md, "rows": n}
+                    "title": " ".join(comment), "result": md, "table": table_md,
+                    "rows": n, "type": res.type}
         log(f"  {f.name}: {n} {'triples' if res.type == 'CONSTRUCT' else 'rows'}")
         if n == 0:
             errors.append(f"query {f.name} returned no results")
@@ -229,6 +253,12 @@ def run_queries(g: Graph) -> dict[str, dict]:
 
 
 # --------------------------------------------------------------------------- 6
+SHAPE_IDS = {"AIToolShape": "S1", "AIModelShape": "S2", "LanguageModelShape": "S3",
+             "ImageGenerationModelShape": "S3", "BenchmarkResultShape": "S4",
+             "PricingPlanShape": "S5", "ProviderShape": "S6", "LicenseShape": "S7",
+             "BenchmarkShape": "S8", "VocabularyShape": "S9", "ModelLineageShape": "S10"}
+
+
 def shacl(onto: Graph, data: Graph, shapes: Graph, label: str):
     conforms, report_graph, report_text = validate(
         data, shacl_graph=shapes, ont_graph=onto, inference="none",
@@ -246,19 +276,21 @@ def shacl(onto: Graph, data: Graph, shapes: Graph, label: str):
         if isinstance(src, BNode):
             node_shape = shapes.value(predicate=SH.property, object=src) or \
                          shapes.value(predicate=SH.sparql, object=src) or src
-        rows.append((short(focus), short(node_shape).replace(
-            "https://otavlna.github.io/4iz444-ai-tools-kg/shapes#", "aish:"),
+        shape_name = str(node_shape).split("#")[-1]
+        rows.append((short(focus).replace("aid:", ""), SHAPE_IDS.get(shape_name, shape_name),
             short(path) if path else "(SPARQL)",
-            short(comp).replace("http://www.w3.org/ns/shacl#", "sh:"), str(msg).replace(str(AID), "aid:")))
+            short(comp).replace("http://www.w3.org/ns/shacl#", "sh:").replace("ConstraintComponent", ""), str(msg).replace(str(AID), "aid:")))
     rows.sort()
-    md = f"**Conforms:** `{str(conforms).lower()}` — {len(rows)} violation(s).\n\n"
+    summary = f"**Conforms:** `{str(conforms).lower()}` — {len(rows)} violation(s)."
+    table = ""
     if rows:
-        md += "| Focus node | Shape | Path | Constraint | Message |\n|---|---|---|---|---|\n"
+        table = "| Focus node | Shape | Path | Constraint | Message |\n|---|---|---|---|---|\n"
         for r in rows:
-            md += "| " + " | ".join(md_escape(c) for c in r) + " |\n"
+            table += "| " + " | ".join(md_escape(c) for c in r) + " |\n"
+    md = summary + "\n\n" + table
     (RESULTS / f"shacl-{label}.md").write_text(md)
     log(f"  {label}: conforms={conforms}, {len(rows)} violations")
-    return conforms, md
+    return conforms, summary, table
 
 
 # --------------------------------------------------------------------------- 7
@@ -338,40 +370,107 @@ def diagram(onto: Graph) -> None:
 
 
 # --------------------------------------------------------------------------- 8
-def assemble_report(queries: dict, stats: str, shacl_valid: str, shacl_invalid: str,
-                    consistency: str) -> None:
+KIND_NAMES = {"TABLE": "Table", "FIGURE": "Figure", "LISTING": "Listing"}
+
+
+def assemble_report(queries: dict, stats: tuple[str, str], shacl_valid: str,
+                    shacl_invalid: tuple[str, str], consistency: str) -> None:
+    """Fill placeholders of report/report.md, number captions per chapter and resolve
+    cross-references. Captions and notes are emitted as [[CAPTION|..]] / [[NOTE|..]]
+    paragraphs that scripts/build_docx.py turns into the caption style of the template."""
     BUILD.mkdir(exist_ok=True)
     tpl = (ROOT / "report" / "report.md").read_text()
+    tpl = re.sub(r"<!--.*?-->", "", tpl, flags=re.S)
 
-    def file_block(path: Path, lang: str) -> str:
-        return f"```{lang}\n{path.read_text().strip()}\n```"
+    def shape_block(name: str) -> str:
+        text = SHAPES.read_text()
+        mm = re.search(rf"^aish:{name}\n.*?\.\n(?=\n|\Z)", text, re.S | re.M)
+        if not mm:
+            errors.append(f"shape {name} not found")
+            return ""
+        return f"```turtle\n{mm.group(0).strip()}\n```"
 
-    def repl(m: re.Match) -> str:
+    # 1. expand content placeholders (they may introduce captions)
+    def expand(m: re.Match) -> str:
         kind, arg = m.group(1), m.group(2)
         if kind == "QUERY":
-            return f"```sparql\n{queries[arg]['query']}\n```"
+            q = queries[arg]
+            label = arg.upper().replace("CQ0", "CQ")
+            return (f"{{{{LISTING:lst:{arg}|SPARQL query {label}}}}}\n\n"
+                    f"```sparql\n{q['query']}\n```")
         if kind == "RESULT":
-            return queries[arg]["result"]
-        if kind == "FILE":
-            p = ROOT / arg
-            return file_block(p, "turtle" if p.suffix == ".ttl" else "")
+            q = queries[arg]
+            label = arg.upper().replace("CQ0", "CQ")
+            if q["type"] == "CONSTRUCT":
+                return (f"{{{{LISTING:lst:{arg}res|Triples constructed by query {label}}}}}\n\n"
+                        f"{q['table']}")
+            return (f"{{{{TABLE:tab:{arg}|Results of query {label}}}}}\n\n{q['table']}\n"
+                    f"[[NOTE|Note: The query returns {q['rows']} rows.]]")
         if kind == "SHAPE":
-            # extract one shape block from shapes.ttl by its local name
-            text = SHAPES.read_text()
-            mm = re.search(rf"^aish:{arg}\n.*?\.\n(?=\n|\Z)", text, re.S | re.M)
-            return f"```turtle\n{mm.group(0).strip()}\n```"
+            return f"{{{{LISTING:lst:{arg}|SHACL shape {arg}}}}}\n\n{shape_block(arg)}"
         return m.group(0)
 
-    out = re.sub(r"\{\{(QUERY|RESULT|FILE|SHAPE):([^}]+)\}\}", repl, tpl)
-    out = (out.replace("{{STATS}}", stats)
+    out = re.sub(r"\{\{(QUERY|RESULT|SHAPE):([^}]+)\}\}", expand, tpl)
+    summary, table = shacl_invalid
+    out = (out.replace("{{STATS_SUMMARY}}", stats[0])
+              .replace("{{STATS_CLASSES}}", stats[1])
               .replace("{{SHACL_VALID}}", shacl_valid)
-              .replace("{{SHACL_INVALID}}", shacl_invalid)
+              .replace("{{SHACL_INVALID}}", table + "\n[[NOTE|Note: " +
+                       re.sub(r"[*`]", "", summary) + "]]")
               .replace("{{CONSISTENCY}}", consistency))
+
+    # 2. number captions per chapter (appendices get letters A, B, ...)
+    numbers: dict[str, str] = {}
+    chapter, appendix_mode, appendix = 0, False, 0
+    counters: dict[str, int] = {}
+    lines = []
+    for line in out.splitlines():
+        if line.startswith("# "):
+            if "{-}" in line:
+                appendix_mode = line.startswith("# Appendices")
+            else:
+                chapter += 1
+            counters = {}
+        elif line.startswith("## ") and appendix_mode:
+            appendix += 1
+            counters = {}
+        m = re.match(r"^\{\{(TABLE|FIGURE|LISTING):([^|}]+)\|(.*)\}\}\s*$", line)
+        if m:
+            kind, ident, rest = m.groups()
+            counters[kind] = counters.get(kind, 0) + 1
+            prefix = chr(ord("A") + appendix - 1) if appendix_mode else str(chapter)
+            num = f"{KIND_NAMES[kind]} {prefix}.{counters[kind]}"
+            if ident in numbers:
+                errors.append(f"duplicate caption id {ident}")
+            numbers[ident] = num
+            if kind == "FIGURE":
+                path, title, note = (rest.split("|") + ["", ""])[:3]
+                lines.append(f"[[CAPTION|{num}|{title}]]")
+                lines.append("")
+                lines.append(f"![]({path}){{width=15.5cm}}")
+                lines.append("")
+                if note:
+                    lines.append(f"[[NOTE|{note}]]")
+            else:
+                lines.append(f"[[CAPTION|{num}|{rest}]]")
+            continue
+        lines.append(line)
+    out = "\n".join(lines)
+
+    # 3. resolve cross-references
+    def ref(m: re.Match) -> str:
+        ident = m.group(1)
+        if ident not in numbers:
+            errors.append(f"unresolved reference {ident}")
+            return ident
+        return numbers[ident]
+
+    out = re.sub(r"\{\{REF:([^}]+)\}\}", ref, out)
     left = re.findall(r"\{\{[^}]+\}\}", out)
     if left:
         errors.append(f"unresolved placeholders in report: {left}")
     (BUILD / "report.md").write_text(out)
-    log("  wrote build/report.md")
+    log(f"  wrote build/report.md ({len(numbers)} numbered captions)")
 
 
 def main() -> int:
@@ -404,10 +503,11 @@ def main() -> int:
     queries = run_queries(g)
 
     log("6. SHACL validation")
-    ok, shacl_valid = shacl(onto, data, shapes, "valid")
+    ok, shacl_valid, _ = shacl(onto, data, shapes, "valid")
     if not ok:
         errors.append("valid data does not conform to SHACL shapes")
-    bad, shacl_invalid = shacl(onto, data + invalid, shapes, "invalid")
+    bad, inv_summary, inv_table = shacl(onto, data + invalid, shapes, "invalid")
+    shacl_invalid = (inv_summary, inv_table)
     if bad:
         errors.append("invalid data unexpectedly conforms")
 

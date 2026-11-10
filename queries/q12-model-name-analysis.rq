@@ -1,5 +1,6 @@
-# Q12 (string functions): Parse model names - extract the model family (text before the first
-#      version number) and the version number - and count releases per family.
+# Q12 (string functions): Parse model names - split each name at its first version number into
+#      a model family (e.g. "Claude Sonnet") and a version label (e.g. "4.5", "4o", "2.5 Pro") -
+#      and count releases per family, listing the versions in order of release.
 PREFIX ait:  <https://otavlna.github.io/4iz444-ai-tools-kg/ontology#>
 PREFIX aid:  <https://otavlna.github.io/4iz444-ai-tools-kg/data/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -16,8 +17,13 @@ WHERE {
          rdfs:label ?name ;
          ait:releaseDate ?released .
       FILTER (REGEX(?name, "[0-9]"))
-      BIND (REPLACE(?name, "^[^0-9]*?([0-9]+(\\.[0-9]+)?).*$", "$1") AS ?version)
-      BIND (UCASE(REPLACE(STRBEFORE(?name, ?version), "[\\s-]*[Vv]?[\\s-]*$", "")) AS ?rawFamily)
+      # first version number in the name, e.g. "4.5" in "Claude Sonnet 4.5"
+      BIND (REPLACE(?name, "^[^0-9]*?([0-9]+(\\.[0-9]+)?).*$", "$1") AS ?number)
+      # everything before it, e.g. "Claude Sonnet " or "Midjourney V"
+      BIND (STRBEFORE(?name, ?number) AS ?prefix)
+      # the rest of the name is the version label, e.g. "4o", "2.5 Pro", "6.1"
+      BIND (STRAFTER(?name, ?prefix) AS ?version)
+      BIND (UCASE(REPLACE(?prefix, "[\\s-]*[Vv]?[\\s-]*$", "")) AS ?rawFamily)
       BIND (IF(?rawFamily = "", "O-SERIES", ?rawFamily) AS ?family)
     }
     ORDER BY ?released

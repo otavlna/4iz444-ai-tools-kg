@@ -2,6 +2,7 @@
 @prefix aid:    <https://otavlna.github.io/4iz444-ai-tools-kg/data/> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 
 # Intentionally INVALID data used to demonstrate that the SHACL shapes work.
 # It is validated together with the valid knowledge graph (ai-tools-data.ttl).
@@ -51,7 +52,7 @@ aid:BadPlan_Price a ait:PricingPlan ;
     ait:monthlyPrice -5.00 ;
     ait:currency "CZK" .
 
-# [S6] Model released before the model it is derived from.
+# [S10] Model released before the model it is derived from.
 aid:BadModel_TimeTravel a ait:LanguageModel ;
     rdfs:label "Claude Sonnet 4.5 Preview (time-travelling)" ;
     ait:developedBy aid:Anthropic ;
@@ -61,3 +62,23 @@ aid:BadModel_TimeTravel a ait:LanguageModel ;
     ait:inputModality aid:Text ;
     ait:outputModality aid:Text ;
     ait:derivedFrom aid:ClaudeSonnet45 .
+
+# [S6] Provider with the founding year as an integer, no headquarters country
+#      and the homepage given as a string literal instead of an IRI.
+aid:BadProvider a ait:Provider ;
+    rdfs:label "Shady AI Labs" ;
+    ait:foundedYear 2024 ;
+    foaf:homepage "https://shady.example" .
+
+# [S7] Licence with an invalid SPDX identifier (contains spaces).
+aid:BadLicense a ait:License ;
+    rdfs:label "Do Whatever You Want Licence" ;
+    ait:spdxId "Do Whatever You Want" .
+
+# [S8] Benchmark without a measured task and without a metric.
+aid:BadBenchmark a ait:Benchmark ;
+    rdfs:label "VibeBench" .
+
+# [S9] Task with two different names.
+aid:BadTask a ait:Task ;
+    rdfs:label "Translation" , "Machine translation" .

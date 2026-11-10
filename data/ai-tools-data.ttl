@@ -5,7 +5,8 @@
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 @prefix schema: <https://schema.org/> .
 
-# Knowledge graph: AI tools catalogue (snapshot of the market around autumn 2025).
+# Knowledge graph: AI tools catalogue - snapshot of the market as of 30 September 2025
+# (see Section 3.2 of the report for the reasons of the cut-off date).
 # Prices are list prices per user per month (monthly billing) for individual/team tiers.
 # Benchmark scores are compiled from publicly reported (mostly vendor-reported) figures;
 # evaluation settings differ between vendors, so the numbers are indicative only.

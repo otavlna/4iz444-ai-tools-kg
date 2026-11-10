@@ -5,6 +5,7 @@
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
 
 # Prefix declarations used by the SPARQL-based constraint
 aish:
@@ -170,7 +171,82 @@ aish:PricingPlanShape
     ] .
 
 #################################################################
-# S6  (SPARQL-based) A model cannot be released before a model it is
+# S6  Every provider has a name, at most one founding year of type
+#     xsd:gYear, a headquarters country and its homepage is an IRI.
+#################################################################
+aish:ProviderShape
+    a sh:NodeShape ;
+    sh:targetClass ait:Provider ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A provider must have a name (rdfs:label of type xsd:string)." ;
+    ] , [
+        sh:path ait:foundedYear ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:gYear ;
+        sh:message "The founding year must be a single value of type xsd:gYear." ;
+    ] , [
+        sh:path ait:headquartersCountry ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A provider must state its headquarters country." ;
+    ] , [
+        sh:path foaf:homepage ;
+        sh:nodeKind sh:IRI ;
+        sh:message "A homepage must be an IRI, not a literal." ;
+    ] .
+
+#################################################################
+# S7  Every licence has exactly one SPDX identifier - either an id
+#     from the SPDX License List or a "LicenseRef-" custom id.
+#################################################################
+aish:LicenseShape
+    a sh:NodeShape ;
+    sh:targetClass ait:License ;
+    sh:property [
+        sh:path ait:spdxId ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^(LicenseRef-[A-Za-z0-9.-]+|[A-Za-z0-9][A-Za-z0-9.+-]*)$" ;
+        sh:message "A licence must have exactly one valid SPDX identifier (e.g. 'Apache-2.0' or 'LicenseRef-Proprietary')." ;
+    ] .
+
+#################################################################
+# S8  Every benchmark measures at least one task and states its metric.
+#################################################################
+aish:BenchmarkShape
+    a sh:NodeShape ;
+    sh:targetClass ait:Benchmark ;
+    sh:property [
+        sh:path ait:measuresTask ;
+        sh:minCount 1 ;
+        sh:class ait:Task ;
+        sh:message "A benchmark must measure at least one ait:Task." ;
+    ] , [
+        sh:path ait:metric ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A benchmark must state exactly one metric." ;
+    ] .
+
+#################################################################
+# S9  Controlled vocabularies (tasks, modalities, integrations) have
+#     exactly one name each.
+#################################################################
+aish:VocabularyShape
+    a sh:NodeShape ;
+    sh:targetClass ait:Task , ait:Modality , ait:Integration ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A task, modality or integration must have exactly one name." ;
+    ] .
+
+#################################################################
+# S10 (SPARQL-based) A model cannot be released before a model it is
 #     derived from.
 #################################################################
 aish:ModelLineageShape

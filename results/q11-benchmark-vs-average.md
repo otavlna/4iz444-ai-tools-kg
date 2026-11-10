@@ -3,15 +3,15 @@
 | AIME 2025 | OpenAI | 94.6 | 88.5 | 6.1 |
 | AIME 2025 | Anthropic | 87.0 | 88.5 | -1.5 |
 | AIME 2025 | Google | 86.7 | 88.5 | -1.8 |
-| AIME 2025 | Alibaba Cloud | 81.5 | 88.5 | -7 |
+| AIME 2025 | Alibaba Cloud | 81.5 | 88.5 | -7.0 |
 | GPQA Diamond | Google | 86.4 | 76.7 | 9.7 |
-| GPQA Diamond | OpenAI | 85.7 | 76.7 | 9 |
+| GPQA Diamond | OpenAI | 85.7 | 76.7 | 9.0 |
 | GPQA Diamond | Anthropic | 83.4 | 76.7 | 6.7 |
 | GPQA Diamond | DeepSeek | 71.5 | 76.7 | -5.2 |
 | GPQA Diamond | Alibaba Cloud | 71.1 | 76.7 | -5.6 |
 | GPQA Diamond | Meta | 69.8 | 76.7 | -6.9 |
 | HumanEval | Anthropic | 92.0 | 89.2 | 2.8 |
-| HumanEval | OpenAI | 90.2 | 89.2 | 1 |
+| HumanEval | OpenAI | 90.2 | 89.2 | 1.0 |
 | HumanEval | Meta | 89.0 | 89.2 | -0.2 |
 | HumanEval | Mistral AI | 88.4 | 89.2 | -0.8 |
 | MMLU | DeepSeek | 90.8 | 87.1 | 3.7 |
